@@ -1,0 +1,240 @@
+.shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.04), transparent 34%),
+    linear-gradient(180deg, #0a0a0a 0%, #050505 42%, #050505 100%);
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  backdrop-filter: blur(12px);
+  background: #000;
+  border-bottom: none;
+}
+
+.topbar-inner {
+  min-height: 4.1rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  width: min(100%, 1440px);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.nav {
+  margin-left: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-summary {
+  list-style: none;
+}
+
+.nav-summary::-webkit-details-marker {
+  display: none;
+}
+
+.nav-dropdown[open] .dropdown-panel {
+  display: grid;
+}
+
+.dropdown-panel {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  left: 0;
+  display: none;
+  gap: 0.85rem;
+  width: min(420px, 90vw);
+  padding: 0.9rem;
+  background: #000;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.32);
+}
+
+.dropdown-group {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.dropdown-empty {
+  display: grid;
+  gap: 0.65rem;
+  padding: 0.35rem 0.1rem;
+}
+
+.dropdown-root {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0.25rem 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: default;
+}
+
+.dropdown-children {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.dropdown-child {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0.3rem 0.55rem;
+  background: #111;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 0.92rem;
+}
+
+.dropdown-child:hover,
+.dropdown-child:focus-visible {
+  background: #111;
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.65rem 0.95rem;
+  border-radius: 0;
+  border: none;
+  background: #000;
+  color: #fff;
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: 0;
+  transition: background-color 140ms ease;
+}
+
+.cart-link {
+  gap: 0.45rem;
+}
+
+.cart-badge {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.35rem;
+  height: 1.35rem;
+  padding: 0 0.25rem;
+  background: #7c3aed;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.nav-button {
+  appearance: none;
+  cursor: pointer;
+}
+
+.nav-link:hover,
+.nav-link:focus-visible {
+  background: #111;
+  border: none;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+}
+
+.brand img {
+  width: 5.5rem;
+  height: auto;
+}
+
+.account-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.account-actions .button,
+.account-actions .button.secondary,
+.account-actions .button.ghost {
+  min-height: 2.75rem;
+  border-radius: 0;
+  padding: 0.65rem 0.95rem;
+  background: #000;
+  color: rgba(255, 255, 255, 0.92);
+  border: none;
+  box-shadow: none;
+}
+
+.account-actions .button:hover,
+.account-actions .button.secondary:hover,
+.account-actions .button.ghost:hover,
+.account-actions .button:focus-visible,
+.account-actions .button.secondary:focus-visible,
+.account-actions .button.ghost:focus-visible {
+  background: #111;
+  border: none;
+}
+
+.page {
+  min-width: 0;
+}
+
+@media (max-width: 960px) {
+  .topbar-inner {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    padding-block: 0.85rem;
+  }
+
+  .nav {
+    margin-left: 0;
+  }
+
+  .account-actions {
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 680px) {
+  .topbar-inner {
+    align-items: flex-start;
+  }
+
+  .nav,
+  .account-actions {
+    width: 100%;
+  }
+
+  .account-actions {
+    margin-left: 0;
+    order: 3;
+    justify-content: flex-start;
+  }
+
+  .nav {
+    order: 2;
+    gap: 0.9rem;
+  }
+
+  .dropdown-panel {
+    position: static;
+    width: 100%;
+    margin-top: 0.4rem;
+  }
+}

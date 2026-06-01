@@ -1,0 +1,429 @@
+@import 'filepond/dist/filepond.min.css';
+@import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
+
+:root {
+  color-scheme: light;
+  --bg: #f3f6fa;
+  --surface: #ffffff;
+  --surface-dark: #070707;
+  --surface-dark-2: #111111;
+  --surface-2: #e9eef4;
+  --border: #d5dde7;
+  --text: #132238;
+  --muted: #5f7184;
+  --accent: #2457d6;
+  --accent-strong: #173c98;
+  --accent-soft: #dce6ff;
+  --success: #13795b;
+  --danger: #b42318;
+  --shadow: 0 10px 30px rgba(19, 34, 56, 0.08);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #050505;
+  color: #f2f2f2;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+  border-radius: 0;
+  border: none;
+  background: #000;
+  color: #fff;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+.filepond--root button {
+  min-height: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+}
+
+.filepond--root .filepond--panel-root {
+  background: #000;
+  border-radius: 0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.filepond--root .filepond--drop-label {
+  min-height: 8.5rem;
+  padding: 1rem;
+  color: #fff;
+}
+
+.filepond--root .filepond--drop-label label {
+  max-width: 100%;
+  padding-inline: 0.5rem;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  line-height: 1.35;
+}
+
+.filepond--root .filepond--item {
+  margin: 0.25rem 0;
+}
+
+.filepond--root .filepond--credits {
+  display: none;
+}
+
+.container {
+  width: min(1120px, 100%);
+  padding-inline: 1rem;
+  margin: 0 auto;
+}
+
+.surface {
+  background: #000;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+form.surface,
+.auth-form,
+.admin-form,
+.editor-panel {
+  background: #000;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+form.surface .field label,
+.auth-form .field label,
+.admin-form .field label,
+.editor-panel .field label,
+form.surface .help-text,
+.auth-form .help-text,
+.admin-form .help-text,
+.editor-panel .help-text,
+form.surface .field-error,
+.auth-form .field-error,
+.admin-form .field-error,
+.editor-panel .field-error {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 0;
+  border: none;
+  background: #000;
+  color: #fff;
+  font-size: 0.875rem;
+}
+
+.manage-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.55rem;
+  padding: 0.18rem 0.5rem;
+  background: #7c3aed;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.7rem 1rem;
+  border-radius: 0;
+  border: none;
+  background: #000;
+  color: #fff;
+  font-weight: 600;
+}
+
+.button.secondary {
+  background: #000;
+  color: #fff;
+  border: none;
+}
+
+.button.ghost {
+  background: #000;
+  color: #fff;
+  border: none;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.field {
+  display: grid;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.field label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  min-width: 0;
+  border: none;
+  border-radius: 0;
+  background: #000;
+  padding: 0.8rem 0.9rem;
+  color: #fff;
+}
+
+.field textarea {
+  min-height: 6.5rem;
+  resize: vertical;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.field-error {
+  color: var(--danger);
+  font-size: 0.9rem;
+}
+
+.help-text {
+  color: var(--muted);
+  font-size: 0.92rem;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.stack {
+  display: grid;
+  gap: 1rem;
+}
+
+.grid-2 {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  min-width: 0;
+}
+
+.grid-3 {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  min-width: 0;
+}
+
+.form-banner {
+  display: grid;
+  gap: 0.3rem;
+  padding: 0.9rem 1rem;
+  border-radius: 0;
+  font-size: 0.95rem;
+}
+
+.form-banner span,
+.form-banner strong {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.form-banner.error {
+  background: #000;
+  color: var(--danger);
+}
+
+.form-banner.success {
+  background: #000;
+  color: var(--success);
+}
+
+.auth-form .button.secondary,
+.admin-form .button.secondary,
+.editor-panel .button.secondary {
+  background: #000;
+  color: #fff;
+  border: none;
+}
+
+.auth-form .button.ghost,
+.admin-form .button.ghost,
+.editor-panel .button.ghost {
+  color: #fff;
+  border: none;
+}
+
+.auth-form .button,
+.admin-form .button,
+.editor-panel .button {
+  background: #000;
+  border: none;
+}
+
+.auth-form .button:focus-visible,
+.admin-form .button:focus-visible,
+.editor-panel .button:focus-visible,
+.button:focus-visible,
+button:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.28);
+  outline-offset: 2px;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/* Shop card carousel */
+.carousel-nav {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  display: inline-grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 1.4rem;
+  line-height: 1;
+  transform: translateY(-50%);
+}
+
+.carousel-nav.prev {
+  left: 0.8rem;
+}
+
+.carousel-nav.next {
+  right: 0.8rem;
+}
+
+.carousel-nav:hover,
+.carousel-nav:focus-visible {
+  background: rgba(0, 0, 0, 0.78);
+}
+
+.carousel-dots {
+  position: absolute;
+  right: 0.85rem;
+  bottom: 0.85rem;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.carousel-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  background: transparent;
+  opacity: 0.72;
+}
+
+.carousel-dot.active {
+  width: 1rem;
+  background: #fff;
+  opacity: 1;
+}
+
+.carousel-count {
+  position: absolute;
+  left: 0.85rem;
+  bottom: 0.85rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.5rem;
+  padding: 0.12rem 0.45rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.42);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 760px) {
+  .carousel-nav {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .carousel-count {
+    bottom: 0.7rem;
+    left: 0.7rem;
+  }
+
+  .carousel-dots {
+    bottom: 0.7rem;
+    right: 0.7rem;
+  }
+}
+
+@media (max-width: 860px) {
+  .grid-2,
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+}

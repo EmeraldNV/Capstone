@@ -1,0 +1,374 @@
+.hero {
+  position: relative;
+  overflow: hidden;
+  min-height: calc(100vh - 4.1rem);
+  background:
+    linear-gradient(90deg, rgba(5, 5, 5, 0.92) 0%, rgba(5, 5, 5, 0.7) 35%, rgba(5, 5, 5, 0.22) 72%, rgba(5, 5, 5, 0.76) 100%),
+    url('/images/hero-profile.png') center top / cover no-repeat;
+}
+
+.hero-backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 16% 52%, rgba(255, 255, 255, 0.05), transparent 18%),
+    radial-gradient(circle at 84% 24%, rgba(255, 255, 255, 0.03), transparent 16%);
+  pointer-events: none;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  min-height: calc(100vh - 4.1rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(360px, 0.85fr);
+  gap: 1.5rem;
+  align-items: end;
+  padding-top: 2.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.hero-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100%;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 1.95rem;
+  font-weight: 400;
+  color: #fff;
+}
+
+.hero-copy h1 {
+  margin: 0;
+  align-self: flex-end;
+  font-size: 7rem;
+  line-height: 0.9;
+  font-weight: 800;
+  letter-spacing: 0;
+  color: #fff;
+}
+
+.hero-text {
+  max-width: 35rem;
+  margin: 0 0 1.25rem;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.hero-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.hero-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.7rem;
+  padding: 0 1.1rem;
+  border-radius: 0;
+  border: none;
+  background: #000;
+  color: #fff;
+  font-weight: 700;
+}
+
+.hero-visual {
+  display: grid;
+  gap: 1rem;
+  align-self: end;
+}
+
+.hero-frame {
+  margin: 0;
+  overflow: hidden;
+  border: none;
+  border-radius: 0;
+  background: #000;
+}
+
+.hero-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-frame.tall {
+  width: 100%;
+  height: 34rem;
+}
+
+.hero-frame.wide {
+  width: 100%;
+  height: 14rem;
+}
+
+.collection {
+  padding-top: 1.75rem;
+  padding-bottom: 3rem;
+}
+
+.section-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.section-kicker {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.72);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.75rem;
+}
+
+.section-header h2 {
+  margin: 0;
+  max-width: 34rem;
+  text-align: right;
+  font-size: 1.5rem;
+  line-height: 1.25;
+  color: #fff;
+}
+
+.products-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.product-card {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  overflow: hidden;
+  background: #0d0d0d;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.product-card.featured {
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+  grid-template-rows: 1fr;
+}
+
+.product-media {
+  display: block;
+  background: #000;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+
+.product-media img,
+.product-empty {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-empty {
+  display: grid;
+  place-items: center;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.product-copy {
+  display: grid;
+  gap: 0.8rem;
+  padding: 1rem;
+}
+
+.product-card.featured .product-copy {
+  padding: 1.25rem;
+  align-content: center;
+}
+
+.product-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.product-head h3 {
+  margin: 0;
+  color: #fff;
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+
+.product-copy p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.76);
+  line-height: 1.5;
+}
+
+.product-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.product-footer strong {
+  color: #fff;
+  font-size: 1.05rem;
+}
+
+.feature-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.feature-pill {
+  padding: 1rem 1.1rem;
+  border: none;
+  border-radius: 0;
+  background: #000;
+}
+
+.feature-pill h3 {
+  margin: 0 0 0.45rem;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.feature-pill p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.74);
+  line-height: 1.5;
+}
+
+.feature-carousel {
+  overflow: hidden;
+  background: #000;
+  border: none;
+  border-radius: 0;
+}
+
+.feature-carousel-viewport {
+  overflow: hidden;
+}
+
+.feature-carousel-track {
+  display: flex;
+  width: 100%;
+  transition: transform 650ms ease;
+  will-change: transform;
+}
+
+.feature-carousel-slide {
+  flex: 0 0 100%;
+  aspect-ratio: 4 / 5;
+  background: #000;
+}
+
+.feature-carousel-slide img,
+.feature-carousel-empty {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.feature-carousel-empty {
+  background: #000;
+}
+
+@media (max-width: 1100px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .hero-copy h1 {
+    align-self: flex-start;
+    text-align: left;
+  }
+
+  .hero-visual {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero-frame.tall,
+  .hero-frame.wide {
+    height: 24rem;
+  }
+
+  .feature-row {
+    grid-template-columns: 1fr;
+  }
+
+  .feature-carousel-slide {
+    aspect-ratio: 16 / 10;
+  }
+
+  .products-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .product-card.featured {
+    grid-column: auto;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero-inner {
+    min-height: auto;
+    padding-top: 1.4rem;
+    padding-bottom: 1.1rem;
+  }
+
+  .eyebrow {
+    font-size: 1.45rem;
+  }
+
+  .hero-copy h1 {
+    font-size: 4rem;
+  }
+
+  .hero-text {
+    max-width: none;
+    font-size: 1rem;
+  }
+
+  .hero-visual {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-frame.tall,
+  .hero-frame.wide {
+    height: 18rem;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .section-header h2 {
+    max-width: none;
+    text-align: left;
+    font-size: 1.2rem;
+  }
+
+  .products-grid {
+    grid-template-columns: 1fr;
+  }
+}

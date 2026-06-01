@@ -1,0 +1,24 @@
+@import './admin-dashboard.component.css';
+
+.admin-form-layout {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+  align-items: start;
+}
+
+.admin-copy,
+.admin-form {
+  width: 100%;
+}
+
+.admin-copy {
+  padding: 1.35rem;
+  border-radius: 0;
+}
+
+.admin-form {
+  padding: 1.25rem;
+  display: grid;
+  gap: 1rem;
+}

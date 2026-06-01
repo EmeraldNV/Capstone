@@ -1,0 +1,35 @@
+<section class="container auth-layout">
+  <div class="auth-copy">
+    <span class="badge">Email verification</span>
+    <h1>Verifica il tuo account</h1>
+    <p class="muted">
+      La pagina completa la registrazione dopo il click sul link ricevuto via email.
+    </p>
+  </div>
+
+  <div class="surface auth-form">
+    <div class="stack">
+      @if (loading) {
+        <div class="form-banner">Verifica in corso...</div>
+      }
+
+      @if (successMessage) {
+        <div class="form-banner success">{{ successMessage }}</div>
+      }
+
+      @if (errorMessage) {
+        <div class="form-banner error">
+          <strong>{{ errorMessage }}</strong>
+          @for (detail of errorDetails; track detail) {
+            <span>{{ detail }}</span>
+          }
+        </div>
+      }
+
+      <div class="form-actions">
+        <a class="button" routerLink="/auth/login">Vai al login</a>
+        <a class="button secondary" routerLink="/">Torna alla home</a>
+      </div>
+    </div>
+  </div>
+</section>

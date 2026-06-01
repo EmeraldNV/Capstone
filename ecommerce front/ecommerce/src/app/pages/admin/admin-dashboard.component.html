@@ -1,0 +1,189 @@
+<section class="admin-page">
+  <header class="page-header">
+    <div>
+      <span class="badge">Dashboard</span>
+      <h1>Statistiche vendite</h1>
+      <p class="muted">
+        Analisi dei dati filtrata per periodo, categoria e metodo di pagamento.
+      </p>
+    </div>
+  </header>
+
+  <form class="surface filters" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="field">
+      <label for="from-date">Dal</label>
+      <input id="from-date" type="date" formControlName="from" />
+    </div>
+    <div class="field">
+      <label for="to-date">Al</label>
+      <input id="to-date" type="date" formControlName="to" />
+    </div>
+    <div class="field">
+      <label for="category-filter">Categoria</label>
+      <select id="category-filter" formControlName="categoryId">
+        <option value="">Tutte</option>
+        @for (category of filterOptions?.categories ?? []; track category.value) {
+          <option [value]="category.value">{{ category.label }}</option>
+        }
+      </select>
+    </div>
+    <div class="field">
+      <label for="payment-method-filter">Pagamento</label>
+      <select id="payment-method-filter" formControlName="paymentMethodCode">
+        <option value="">Tutti</option>
+        @for (method of filterOptions?.paymentMethods ?? []; track method.value) {
+          <option [value]="method.value">{{ method.label }}</option>
+        }
+      </select>
+    </div>
+    <div class="field">
+      <label for="order-status-filter">Stato ordine</label>
+      <select id="order-status-filter" formControlName="orderStatus">
+        <option value="">Tutti</option>
+        @for (status of filterOptions?.orderStatuses ?? []; track status) {
+          <option [value]="status">{{ status }}</option>
+        }
+      </select>
+    </div>
+    <div class="field">
+      <label for="payment-status-filter">Stato pagamento</label>
+      <select id="payment-status-filter" formControlName="paymentStatus">
+        <option value="">Tutti</option>
+        @for (status of filterOptions?.paymentStatuses ?? []; track status) {
+          <option [value]="status">{{ status }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="filters-actions">
+      <button class="button" type="submit" [disabled]="loading">Aggiorna</button>
+      <button class="button ghost" type="button" (click)="reset()" [disabled]="loading">Reset</button>
+    </div>
+  </form>
+
+  @if (errorMessage) {
+    <div class="surface banner error">
+      <strong>{{ errorMessage }}</strong>
+      @for (detail of errorDetails; track detail) {
+        <span>{{ detail }}</span>
+      }
+    </div>
+  }
+
+  @if (dashboard) {
+    <section class="kpis">
+      <article class="surface kpi">
+        <span class="badge">Fatturato</span>
+        <strong>{{ formatMoney(dashboard.totalRevenue, dashboard.currencyCode) }}</strong>
+      </article>
+      <article class="surface kpi">
+        <span class="badge">Vendite</span>
+        <strong>{{ dashboard.totalSales }}</strong>
+      </article>
+      <article class="surface kpi">
+        <span class="badge">Clienti</span>
+        <strong>{{ dashboard.totalCustomers }}</strong>
+      </article>
+      <article class="surface kpi">
+        <span class="badge">Ticket medio</span>
+        <strong>{{ formatMoney(dashboard.averageTicket, dashboard.currencyCode) }}</strong>
+      </article>
+      <article class="surface kpi">
+        <span class="badge">Transazioni</span>
+        <strong>{{ dashboard.totalTransactions }}</strong>
+      </article>
+    </section>
+
+    <div class="grid">
+      <section class="surface panel chart-panel">
+        <div class="panel-header">
+          <div>
+            <h2>Andamento vendite</h2>
+            <p class="muted">{{ formatDate(dashboard.from) }} - {{ formatDate(dashboard.to) }}</p>
+          </div>
+          <span class="badge">{{ activeCategoryLabel() }}</span>
+        </div>
+
+        <svg viewBox="0 0 640 220" class="trend-chart" role="img" aria-label="Andamento vendite nel tempo">
+          <defs>
+            <linearGradient id="trendFill" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stop-color="rgba(255,255,255,0.28)" />
+              <stop offset="100%" stop-color="rgba(255,255,255,0)" />
+            </linearGradient>
+          </defs>
+          <path [attr.d]="trendPath()" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" />
+          @for (point of trendPoints(); track point.date) {
+            <circle [attr.cx]="point.x" [attr.cy]="point.y" r="4" fill="white">
+              <title>{{ point.date }}: {{ formatMoney(point.revenue, dashboard.currencyCode) }}</title>
+            </circle>
+          }
+        </svg>
+      </section>
+
+      <section class="surface panel">
+        <div class="panel-header">
+          <div>
+            <h2>Distribuzione per categoria</h2>
+            <p class="muted">Contributo sul fatturato filtrato.</p>
+          </div>
+        </div>
+
+        <div class="category-bars">
+          @for (bar of categoryBars(); track bar.label) {
+            <div class="category-row">
+              <div class="category-copy">
+                <strong>{{ bar.label }}</strong>
+                <span class="muted">{{ formatMoney(bar.revenue, dashboard.currencyCode) }}</span>
+              </div>
+              <div class="category-track">
+                <span class="category-fill" [style.width.%]="bar.percent"></span>
+              </div>
+            </div>
+          } @empty {
+            <p class="muted">Nessun dato disponibile.</p>
+          }
+        </div>
+      </section>
+    </div>
+
+    <section class="surface panel">
+      <div class="panel-header">
+        <div>
+          <h2>Top prodotti</h2>
+          <p class="muted">Classifica ordinata per ricavo.</p>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Prodotto</th>
+              <th>Slug</th>
+              <th>Quantità</th>
+              <th>Ricavo</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of dashboard.topProducts; track item.productId) {
+              <tr>
+                <td>{{ item.productName }}</td>
+                <td>{{ item.slug }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ formatMoney(item.revenue, dashboard.currencyCode) }}</td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="4" class="muted">Nessun prodotto disponibile.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  }
+
+  @if (loading && !dashboard) {
+    <div class="surface banner">Caricamento statistiche in corso...</div>
+  }
+</section>

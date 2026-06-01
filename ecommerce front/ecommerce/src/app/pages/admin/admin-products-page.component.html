@@ -1,0 +1,305 @@
+<section class="container admin-products-layout">
+  <div class="admin-hero">
+    <div>
+      <span class="badge">Admin / Products</span>
+      <h1>Gestione prodotti</h1>
+      <p class="muted">
+        Crea, aggiorna, elimina e pubblica prodotti con upload immagini server-side.
+      </p>
+    </div>
+    <a class="button secondary" routerLink="/admin">Torna alla dashboard</a>
+  </div>
+
+  <div class="admin-grid">
+    <form class="surface editor-panel" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="panel-header">
+        <div>
+          <h2>{{ editingProduct ? 'Modifica prodotto' : 'Nuovo prodotto' }}</h2>
+          <p class="muted">
+            {{ editingProduct ? editingProduct.name : 'Compila i campi principali e associa eventuali immagini.' }}
+          </p>
+        </div>
+        @if (editingProduct) {
+          <button class="button ghost" type="button" (click)="cancelEditing()">Annulla</button>
+        }
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="product-name">Nome</label>
+          <input id="product-name" type="text" formControlName="name" />
+        </div>
+        <div class="field">
+          <label for="product-sport">Categoria prodotto</label>
+          <select id="product-sport" formControlName="sportType">
+            @for (option of productClassificationOptions; track option.value) {
+              <option [value]="option.value">{{ option.label }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="product-gender">Genere</label>
+          <select id="product-gender" formControlName="gender">
+            @for (gender of genders; track gender) {
+              <option [value]="gender">{{ gender }}</option>
+            }
+          </select>
+        </div>
+        <div class="field">
+          <label for="product-age-group">Age group</label>
+          <select id="product-age-group" formControlName="ageGroup">
+            @for (ageGroup of ageGroups; track ageGroup) {
+              <option [value]="ageGroup">{{ ageGroup }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="product-season">Season</label>
+          <select id="product-season" formControlName="season">
+            <option value="">Nessuna stagione</option>
+            @for (season of seasons; track season) {
+              <option [value]="season">{{ season }}</option>
+            }
+          </select>
+        </div>
+        <div class="field">
+          <label for="product-currency">Currency</label>
+          <input id="product-currency" type="text" formControlName="currencyCode" maxlength="3" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="product-short">Descrizione breve</label>
+        <textarea id="product-short" formControlName="shortDescription"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="product-description">Descrizione completa</label>
+        <textarea id="product-description" formControlName="description"></textarea>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="product-material">Materiale</label>
+          <input id="product-material" type="text" formControlName="material" />
+        </div>
+        <div class="field">
+          <label for="product-care">Cura</label>
+          <input id="product-care" type="text" formControlName="careInstructions" />
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="product-brand">Brand ID</label>
+          <input id="product-brand" type="number" formControlName="brandId" />
+        </div>
+        <div class="field">
+          <label for="product-taglia-picker">Taglie</label>
+          <select
+            id="product-taglia-picker"
+            formControlName="tagliaPicker"
+            [disabled]="taglieLoading || !availableTaglie.length"
+            (change)="onTagliaPickerChange()"
+          >
+            <option [ngValue]="null">Seleziona una taglia</option>
+            @for (taglia of availableTaglie; track taglia.id) {
+              <option [ngValue]="taglia.id" [disabled]="isTagliaSelected(taglia.id)">
+                {{ taglia.codice }} - {{ taglia.nome }}
+              </option>
+            }
+          </select>
+          <div class="help-text">Aggiungi una taglia alla volta. Quelle selezionate compaiono sotto.</div>
+          @if (taglieLoading) {
+            <div class="help-text">Caricamento taglie in corso...</div>
+          } @else if (taglieError) {
+            <div class="field-error">{{ taglieError }}</div>
+          } @else if (!availableTaglie.length) {
+            <div class="field-error">Nessuna taglia disponibile.</div>
+          }
+          @if (form.get('tagliaIds')?.touched && form.get('tagliaIds')?.errors?.['required']) {
+            <div class="field-error">Seleziona almeno una taglia.</div>
+          }
+          @if (form.get('tagliaIds')?.touched && form.get('tagliaIds')?.errors?.['tagliaInvalid']) {
+            <div class="field-error">Seleziona solo taglie valide dal menu.</div>
+          }
+          @if (form.get('tagliaIds')?.value?.length) {
+            <div class="taglie">
+              @for (tagliaId of form.get('tagliaIds')?.value ?? []; track tagliaId) {
+                @let taglia = tagliaById(tagliaId);
+                @if (taglia) {
+                  <button class="tag-pill" type="button" (click)="removeTaglia(taglia.id)">
+                    {{ taglia.codice }} &times;
+                  </button>
+                }
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="product-category">Categoria shop</label>
+          <select
+            id="product-category"
+            formControlName="categoryId"
+            [disabled]="categoriesLoading || !leafCategories().length"
+          >
+            <option [ngValue]="null">Seleziona una sottocategoria</option>
+            @for (category of leafCategories(); track category.id) {
+              <option [ngValue]="category.id">{{ category.name }}</option>
+            }
+          </select>
+          @if (categoriesLoading) {
+            <div class="help-text">Caricamento categorie in corso...</div>
+          } @else if (categoriesError) {
+            <div class="field-error">{{ categoriesError }}</div>
+          } @else if (!leafCategories().length) {
+            <div class="field-error">Nessuna sottocategoria disponibile.</div>
+          }
+          @if (form.get('categoryId')?.touched && form.get('categoryId')?.errors?.['required']) {
+            <div class="field-error">Seleziona una sottocategoria.</div>
+          }
+          @if (form.get('categoryId')?.touched && form.get('categoryId')?.errors?.['categoryInvalid']) {
+            <div class="field-error">Seleziona una categoria valida dal menu.</div>
+          }
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="field">
+          <label for="product-list-price">List price</label>
+          <input id="product-list-price" type="number" step="0.01" formControlName="listPrice" />
+        </div>
+        <div class="field">
+          <label for="product-sale-price">Sale price</label>
+          <input id="product-sale-price" type="number" step="0.01" formControlName="salePrice" />
+        </div>
+        <div class="field">
+          <label for="product-stock">Stock</label>
+          <input id="product-stock" type="number" formControlName="stockQuantity" />
+        </div>
+      </div>
+
+      <div class="flags">
+        <label class="toggle">
+          <input type="checkbox" formControlName="taxable" />
+          <span>Taxable</span>
+        </label>
+        <label class="toggle">
+          <input type="checkbox" formControlName="ipfApproved" />
+          <span>IPF Approved</span>
+        </label>
+        <label class="toggle">
+          <input type="checkbox" formControlName="active" />
+          <span>Active</span>
+        </label>
+      </div>
+
+      <div class="field">
+        <label>Immagini</label>
+        <div class="help-text">
+          FilePond mostra anteprime immediate e l'ordine selezionato viene mantenuto al salvataggio.
+        </div>
+        <app-product-image-manager
+          [images]="editingProduct?.images ?? []"
+          [productName]="editingProduct?.name || form.value.name || 'Prodotto'"
+          [disabled]="saving || uploading"
+          [stagedResetToken]="stagedResetToken"
+          (stagedFilesChange)="onStagedFilesChanged($event)"
+          (reorderRequested)="saveImageOrder($event)"
+          (primaryRequested)="setPrimaryImage($event)"
+          (removeRequested)="removeImage($event)"
+        />
+      </div>
+
+      @if (errorMessage) {
+        <div class="form-banner error">
+          <strong>{{ errorMessage }}</strong>
+          @for (detail of errorDetails; track detail) {
+            <span>{{ detail }}</span>
+          }
+        </div>
+      }
+
+      @if (message) {
+        <div class="form-banner success">{{ message }}</div>
+      }
+
+      <div class="form-actions">
+        <button class="button" type="submit" [disabled]="saving || uploading">
+          {{ editingProduct ? 'Salva modifiche' : 'Crea prodotto' }}
+        </button>
+      </div>
+    </form>
+
+    <section class="surface list-panel">
+      <div class="panel-header">
+        <div>
+          <h2>Catalogo</h2>
+          <p class="muted">Elenco prodotti visibili dall'admin.</p>
+        </div>
+        <div class="field filter-select">
+          <label for="catalog-taglia-filter">Filtro taglia</label>
+          <select
+            id="catalog-taglia-filter"
+            [value]="selectedCatalogTagliaId ?? ''"
+            (change)="onCatalogTagliaChange($event)"
+            [disabled]="taglieLoading || !availableTaglie.length"
+          >
+            <option value="">Tutte le taglie</option>
+            @for (taglia of availableTaglie; track taglia.id) {
+              <option [value]="taglia.id">{{ taglia.codice }} - {{ taglia.nome }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      @if (loading && !products.length) {
+        <p class="muted">Caricamento in corso...</p>
+      } @else {
+        <div class="product-list">
+          @for (product of products; track product.id) {
+            <article class="product-row">
+              <div class="thumb">
+                @if (product.thumbnailUrl) {
+                  <img [src]="resolveMediaUrl(product.thumbnailUrl)" [alt]="product.name" />
+                } @else {
+                  <div class="thumb-empty">{{ product.name.charAt(0) }}</div>
+                }
+              </div>
+              <div class="row-copy">
+                <strong>{{ product.name }}</strong>
+                <p class="muted">{{ product.productCode }} - {{ product.slug }}</p>
+                <p class="meta">
+                  {{ formatMoney(product.effectivePrice, product.currencyCode) }}
+                  <span [class.inactive]="!product.active">{{ product.active ? 'Active' : 'Inactive' }}</span>
+                </p>
+                @if (product.taglie.length) {
+                  <div class="taglie">
+                    @for (taglia of product.taglie; track taglia.id) {
+                      <span class="tag-pill">{{ taglia.codice }}</span>
+                    }
+                  </div>
+                }
+              </div>
+              <div class="row-actions">
+                <button class="button secondary" type="button" (click)="editProduct(product.id)">Modifica</button>
+                <button class="button ghost" type="button" (click)="deleteProduct(product.id)">Elimina</button>
+              </div>
+            </article>
+          } @empty {
+            <p class="muted">Nessun prodotto disponibile.</p>
+          }
+        </div>
+      }
+    </section>
+  </div>
+</section>

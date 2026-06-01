@@ -1,0 +1,23 @@
+.idea/
+
+# Frontend
+**/node_modules/
+**/dist/
+**/.angular/
+**/coverage/
+**/npm-debug.log*
+**/yarn-error.log
+
+# Backend / Java
+**/target/
+*.class
+
+# Environment and local overrides
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# OS files
+.DS_Store
+Thumbs.db

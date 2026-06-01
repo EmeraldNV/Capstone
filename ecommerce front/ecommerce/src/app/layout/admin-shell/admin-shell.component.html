@@ -1,0 +1,39 @@
+<section class="admin-shell">
+  <aside class="admin-sidebar">
+    <div class="sidebar-brand">
+      <span class="badge">Admin</span>
+      <h1>Ecommerce Panel</h1>
+      <p class="muted">
+        @if (session.isAuthenticated()) {
+          {{ session.user()?.email }}
+        } @else {
+          Sessione non disponibile
+        }
+      </p>
+    </div>
+
+    <nav class="sidebar-nav">
+      @for (item of navigation; track item.path) {
+        <a [routerLink]="item.path" routerLinkActive="active" class="nav-link">{{ item.label }}</a>
+      }
+    </nav>
+
+    <div class="sidebar-section">
+      <span class="badge">Sito pubblico</span>
+      <nav class="sidebar-nav">
+        @for (item of storefrontLinks; track item.path) {
+          <a [routerLink]="item.path" class="nav-link">{{ item.label }}</a>
+        }
+      </nav>
+    </div>
+
+    <div class="sidebar-meta">
+      <span class="badge">Ruoli</span>
+      <p class="muted">{{ session.roles().join(', ') }}</p>
+    </div>
+  </aside>
+
+  <main class="admin-content">
+    <router-outlet />
+  </main>
+</section>

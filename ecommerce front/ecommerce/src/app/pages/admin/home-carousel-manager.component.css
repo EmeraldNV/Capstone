@@ -1,0 +1,103 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.carousel-manager {
+  display: grid;
+  gap: 0.9rem;
+  padding: 1rem;
+  width: 100%;
+}
+
+.manager-header,
+.reorder-toolbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.manager-header h3,
+.reorder-toolbar strong {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.manager-header p,
+.reorder-toolbar p {
+  margin: 0.25rem 0 0;
+}
+
+.counter,
+.index {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  background: #000;
+  color: #fff;
+  font-size: 0.8rem;
+}
+
+.pond-host {
+  width: 100%;
+}
+
+.staged-files {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.staged-files span {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.55rem;
+  background: #000;
+  color: #fff;
+  font-size: 0.85rem;
+}
+
+.sortable-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+}
+
+.sortable-image {
+  display: grid;
+  gap: 0.6rem;
+  padding: 0.6rem;
+  background: #000;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.sortable-image.dragging {
+  opacity: 0.72;
+  outline: 2px dashed rgba(255, 255, 255, 0.24);
+}
+
+.sortable-image img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.sortable-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.sortable-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+@media (max-width: 680px) {
+  .manager-header,
+  .reorder-toolbar {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,45 @@
+<section class="container checkout-result-layout">
+  <div class="result-head">
+    <div>
+      <span class="badge">Stripe checkout</span>
+      <h1>{{ result === 'success' ? 'Pagamento completato' : 'Pagamento annullato' }}</h1>
+      <p class="muted">
+        {{ result === 'success' ? "La transazione viene verificata e l'ordine viene registrato nel DB." : 'Nessun addebito è stato effettuato.' }}
+      </p>
+    </div>
+    <div class="result-actions">
+      <a class="button secondary" routerLink="/shop">Torna allo shop</a>
+      <a class="button ghost" routerLink="/cart">Apri carrello</a>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="surface result-panel">
+      <div class="loading-bar"></div>
+      <p class="muted">Verifica stato pagamento in corso...</p>
+    </div>
+  } @else if (errorMessage) {
+    <div class="form-banner error">{{ errorMessage }}</div>
+  } @else {
+    <div class="surface result-panel">
+      <h2>{{ message }}</h2>
+      <p class="muted">
+        @if (realtimeConnected) {
+          Aggiornamento realtime attivo.
+        } @else {
+          Attendo conferma backend.
+        }
+      </p>
+      @if (orderNumber) {
+        <p class="muted">Numero ordine: <strong>{{ orderNumber }}</strong></p>
+      }
+      @if (sessionStatus) {
+        <p class="muted">Stato sessione: {{ sessionStatus }}</p>
+      }
+      <div class="result-actions">
+        <a class="button" routerLink="/shop">Continua lo shopping</a>
+        <a class="button secondary" routerLink="/cart">Vai al carrello</a>
+      </div>
+    </div>
+  }
+</section>

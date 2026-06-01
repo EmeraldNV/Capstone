@@ -1,0 +1,60 @@
+<section class="carousel-manager surface">
+  <div class="manager-header">
+    <div>
+      <h3>Carousel home</h3>
+      <p class="muted">Carica più immagini e riordinale per il blocco visivo della home.</p>
+    </div>
+
+    @if (stagedFileNames.length) {
+      <span class="counter">{{ stagedFileNames.length }} file pronti</span>
+    }
+  </div>
+
+  <div #pondHost class="pond-host"></div>
+
+  @if (stagedFileNames.length) {
+    <div class="staged-files">
+      @for (name of stagedFileNames; track name) {
+        <span>{{ name }}</span>
+      }
+    </div>
+  }
+
+  @if (orderedImages.length) {
+    <div class="reorder-toolbar">
+      <div>
+        <strong>Ordine immagini salvate</strong>
+        <p class="muted">Trascina le card per cambiare la sequenza del carousel.</p>
+      </div>
+      <button class="button secondary" type="button" [disabled]="disabled || !orderDirty" (click)="saveOrder()">
+        Salva ordine
+      </button>
+    </div>
+
+    <div class="sortable-grid">
+      @for (image of orderedImages; track image.id; let index = $index) {
+        <article
+          class="sortable-image"
+          draggable="true"
+          [class.dragging]="dragIndex === index"
+          (dragstart)="onDragStart(index, $event)"
+          (dragover)="onDragOver($event)"
+          (drop)="onDrop(index, $event)"
+          (dragend)="onDragEnd()"
+        >
+          <img [src]="image.imageUrl" [alt]="image.altText || 'Carousel home'" />
+          <div class="sortable-meta">
+            <span class="index">#{{ index + 1 }}</span>
+          </div>
+          <div class="sortable-actions">
+            <button class="button ghost" type="button" [disabled]="disabled" (click)="handleRemove(image.id)">
+              Rimuovi
+            </button>
+          </div>
+        </article>
+      }
+    </div>
+  } @else {
+    <p class="muted">Nessuna immagine salvata per il carousel home.</p>
+  }
+</section>

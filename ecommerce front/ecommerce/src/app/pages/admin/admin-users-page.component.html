@@ -1,0 +1,173 @@
+<section class="admin-page">
+  <header class="page-header">
+    <div>
+      <span class="badge">Utenti</span>
+      <h1>Gestione utenti</h1>
+      <p class="muted">Creazione, aggiornamento stato/ruoli e cronologia azioni admin.</p>
+    </div>
+  </header>
+
+  <div class="toolbar surface">
+    <div class="field search">
+      <label for="user-search">Cerca email</label>
+      <input id="user-search" type="text" [(ngModel)]="search" name="search" />
+    </div>
+    <div class="toolbar-actions">
+      <button class="button" type="button" (click)="searchUsers()" [disabled]="loading">Filtra</button>
+      <button class="button ghost" type="button" (click)="refresh()" [disabled]="loading">Aggiorna</button>
+    </div>
+  </div>
+
+  @if (errorMessage) {
+    <div class="surface banner error">
+      <strong>{{ errorMessage }}</strong>
+      @for (detail of errorDetails; track detail) {
+        <span>{{ detail }}</span>
+      }
+    </div>
+  }
+
+  @if (successMessage) {
+    <div class="surface banner success">{{ successMessage }}</div>
+  }
+
+  <div class="layout">
+    <section class="surface panel list-panel">
+      <div class="panel-header">
+        <div>
+          <h2>Lista utenti</h2>
+          <p class="muted">{{ users.length }} record</p>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Ruoli</th>
+              <th>Stato</th>
+              <th>Verificato</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (user of users; track user.id) {
+              <tr [class.selected]="selectedUser?.id === user.id">
+                <td>{{ user.email }}</td>
+                <td>{{ user.roles.join(', ') || '-' }}</td>
+                <td>{{ user.status }}</td>
+                <td>{{ user.emailVerified ? 'Sì' : 'No' }}</td>
+                <td class="row-actions">
+                  <button class="button secondary" type="button" (click)="selectUser(user)">Modifica</button>
+                  <button class="button ghost" type="button" (click)="deactivateUser(user)">Disattiva</button>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="5" class="muted">Nessun utente trovato.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="surface panel forms-panel">
+      <div class="panel-block">
+        <h2>Nuovo utente admin</h2>
+        <form class="form-grid" [formGroup]="createForm" (ngSubmit)="submitCreate()">
+          <div class="field">
+            <label>Email</label>
+            <input type="email" formControlName="email" />
+          </div>
+          <div class="field">
+            <label>Password</label>
+            <input type="password" formControlName="password" />
+          </div>
+          <div class="field">
+            <label>Stato</label>
+            <select formControlName="status">
+              <option value="ACTIVE">ACTIVE</option>
+              <option value="INACTIVE">INACTIVE</option>
+              <option value="LOCKED">LOCKED</option>
+              <option value="PENDING">PENDING</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Ruoli</label>
+            <input type="text" formControlName="roleCodes" placeholder="ADMIN, STAFF" />
+          </div>
+          <label class="toggle">
+            <input type="checkbox" formControlName="emailVerified" />
+            <span>Email verificata</span>
+          </label>
+          <div class="actions">
+            <button class="button" type="submit" [disabled]="saving">Crea utente</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="panel-block">
+        <h2>Modifica utente</h2>
+        @if (selectedUser) {
+          <p class="muted">Utente selezionato: {{ selectedUser.email }}</p>
+          <form class="form-grid" [formGroup]="editForm" (ngSubmit)="submitUpdate()">
+            <div class="field">
+              <label>Email</label>
+              <input type="email" formControlName="email" />
+            </div>
+            <div class="field">
+              <label>Stato</label>
+              <select formControlName="status">
+                <option value="ACTIVE">ACTIVE</option>
+                <option value="INACTIVE">INACTIVE</option>
+                <option value="LOCKED">LOCKED</option>
+                <option value="PENDING">PENDING</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Ruoli</label>
+              <input type="text" formControlName="roleCodes" placeholder="ADMIN, STAFF, CUSTOMER" />
+            </div>
+            <label class="toggle">
+              <input type="checkbox" formControlName="emailVerified" />
+              <span>Email verificata</span>
+            </label>
+            <div class="actions">
+              <button class="button" type="submit" [disabled]="saving">Salva modifiche</button>
+            </div>
+          </form>
+        } @else {
+          <p class="muted">Seleziona un utente dalla tabella per modificarlo.</p>
+        }
+      </div>
+    </section>
+  </div>
+
+  <section class="surface panel">
+    <div class="panel-header">
+      <div>
+        <h2>Cronologia azioni admin</h2>
+        <p class="muted">Ultime operazioni sugli utenti.</p>
+      </div>
+    </div>
+
+    <div class="audit-list">
+      @for (log of auditLogs; track log.id) {
+        <article class="audit-row">
+          <div>
+            <strong>{{ log.actionType }}</strong>
+            <p class="muted">{{ log.entityName }} #{{ log.entityId }} - {{ log.actorEmail || 'system' }}</p>
+          </div>
+          <div class="audit-meta">
+            <span>{{ formatDate(log.createdAt) }}</span>
+            <span class="muted">{{ log.ipAddress || '-' }}</span>
+          </div>
+        </article>
+      } @empty {
+        <p class="muted">Nessun log disponibile.</p>
+      }
+    </div>
+  </section>
+</section>

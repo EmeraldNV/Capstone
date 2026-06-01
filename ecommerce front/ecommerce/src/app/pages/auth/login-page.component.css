@@ -1,0 +1,62 @@
+.auth-layout {
+  min-height: calc(100vh - 4.1rem);
+  display: grid;
+  place-items: center;
+  gap: 1.5rem;
+  padding: 2rem 0;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.auth-copy h1 {
+  margin: 1rem 0 0.75rem;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.05;
+}
+
+.auth-copy {
+  width: min(100%, 560px);
+  text-align: center;
+}
+
+.auth-form {
+  width: min(100%, 460px);
+  padding: 1.25rem;
+  background: #000;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.auth-form .field label,
+.auth-form .help-text,
+.auth-form .field-error,
+.auth-form .form-banner.success {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.auth-form .field input,
+.auth-form .field textarea,
+.auth-form .field select {
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 0;
+}
+
+.auth-form .field input::placeholder,
+.auth-form .field textarea::placeholder {
+  color: rgba(255, 255, 255, 0.38);
+}
+
+.auth-form .button.secondary {
+  background: #000;
+  color: #fff;
+  border: none;
+}
+
+@media (max-width: 900px) {
+  .auth-layout {
+    min-height: auto;
+    padding: 1.25rem 0 2rem;
+  }
+}

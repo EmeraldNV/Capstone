@@ -1,0 +1,51 @@
+<section class="container home-carousel-layout">
+  <div class="page-head">
+    <div>
+      <span class="badge">Admin / Home Carousel</span>
+      <h1>Carousel home</h1>
+      <p class="muted">Gestione separata delle immagini del secondo blocco della home.</p>
+    </div>
+    <a class="button secondary" routerLink="/admin">Torna alla dashboard</a>
+  </div>
+
+  <div class="surface upload-panel">
+    <div class="panel-header">
+      <div>
+        <h2>Caricamento immagini</h2>
+        <p class="muted">Usa FilePond per selezionare più immagini. Nessun testo viene mostrato nella card pubblica.</p>
+      </div>
+    </div>
+
+    <app-home-carousel-manager
+      [images]="images"
+      [disabled]="saving || uploading"
+      [stagedResetToken]="stagedResetToken"
+      (stagedFilesChange)="onStagedFilesChanged($event)"
+      (reorderRequested)="saveImageOrder($event)"
+      (removeRequested)="removeImage($event)"
+    />
+
+    @if (errorMessage) {
+      <div class="form-banner error">
+        <strong>{{ errorMessage }}</strong>
+        @for (detail of errorDetails; track detail) {
+          <span>{{ detail }}</span>
+        }
+      </div>
+    }
+
+    @if (message) {
+      <div class="form-banner success">{{ message }}</div>
+    }
+
+    <div class="form-actions">
+      <button class="button" type="button" [disabled]="saving || uploading || !selectedFiles.length" (click)="submit()">
+        Carica immagini
+      </button>
+    </div>
+  </div>
+
+  @if (loading && !images.length) {
+    <p class="muted">Caricamento in corso...</p>
+  }
+</section>

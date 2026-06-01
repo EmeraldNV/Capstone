@@ -1,0 +1,56 @@
+<section class="container admin-form-layout">
+  <div class="admin-copy">
+    <span class="badge">POST /api/v1/admin/users/:userId/roles</span>
+    <h1>Assegna ruoli a un utente</h1>
+    <p class="muted">
+      Il backend permette questa operazione solo ad ADMIN. Il form invia l identificativo utente e un set
+      di ruoli normalizzati.
+    </p>
+    <a class="button secondary" routerLink="/admin">Torna alla dashboard</a>
+  </div>
+
+  <form class="surface admin-form" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="field">
+      <label for="roles-user-id">User ID</label>
+      <input id="roles-user-id" type="number" min="1" formControlName="userId" />
+      @if (form.controls.userId.touched && form.controls.userId.invalid) {
+        <div class="field-error">Inserisci un identificativo valido.</div>
+      }
+    </div>
+
+    <div class="field">
+      <label for="roles-role-codes">Nuovi ruoli</label>
+      <textarea
+        id="roles-role-codes"
+        formControlName="roleCodes"
+        placeholder="ADMIN, STAFF"
+      ></textarea>
+      <div class="help-text">Separare con virgole. I ruoli sono inviati in maiuscolo.</div>
+    </div>
+
+    @if (errorMessage) {
+      <div class="form-banner error">
+        <strong>{{ errorMessage }}</strong>
+        @for (detail of errorDetails; track detail) {
+          <span>{{ detail }}</span>
+        }
+      </div>
+    }
+
+    @if (successMessage) {
+      <div class="form-banner success">
+        <strong>{{ successMessage }}</strong>
+        @if (resultRoles.length) {
+          <span>Ruoli finali: {{ resultRoles.join(', ') }}</span>
+        }
+      </div>
+    }
+
+    <div class="form-actions">
+      <button class="button" type="submit" [disabled]="loading">
+        {{ loading ? 'Aggiornamento in corso...' : 'Assegna ruoli' }}
+      </button>
+      <a class="button secondary" routerLink="/admin/users/create">Crea utente</a>
+    </div>
+  </form>
+</section>

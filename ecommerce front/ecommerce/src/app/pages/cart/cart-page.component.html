@@ -1,0 +1,115 @@
+<section class="container cart-layout">
+  <div class="cart-head">
+    <div>
+      <span class="badge">Carrello</span>
+      <h1>I tuoi prodotti</h1>
+      <p class="muted">Controlla articoli, quantita e totale prima di proseguire.</p>
+    </div>
+
+    <div class="cart-actions">
+      <a class="button secondary" routerLink="/shop">Continua lo shopping</a>
+      @if (cart.items.length) {
+        <button type="button" class="button ghost" (click)="cart.clear()">Svuota carrello</button>
+      }
+    </div>
+  </div>
+
+  @if (!cart.items.length) {
+    <div class="surface empty-cart">
+      <span class="empty-icon">0</span>
+      <div>
+        <h2>Il carrello e vuoto</h2>
+        <p class="muted">Aggiungi prodotti dallo shop per vederli qui.</p>
+      </div>
+      <a class="button" routerLink="/shop">Vai allo shop</a>
+    </div>
+  } @else {
+    <div class="cart-grid">
+      <div class="cart-list">
+        @for (item of cart.items; track item.productId) {
+          <article class="surface cart-item">
+            <div class="cart-item-media">
+              @if (item.imageUrl) {
+                <img [src]="item.imageUrl" [alt]="item.name" />
+              } @else {
+                <div class="cart-empty">{{ item.name.charAt(0) }}</div>
+              }
+            </div>
+
+            <div class="cart-item-copy">
+              <div class="cart-item-top">
+                <div class="cart-item-title">
+                  <span class="cart-kicker">Prodotto</span>
+                  <h2>{{ item.name }}</h2>
+                  <p class="muted">{{ item.shortDescription || 'Nessuna descrizione breve disponibile.' }}</p>
+                </div>
+
+                <button type="button" class="button ghost" (click)="cart.remove(item.productId)">Rimuovi</button>
+              </div>
+
+              <div class="cart-meta">
+                @if (item.brandName) {
+                  <span>{{ item.brandName }}</span>
+                }
+                @if (item.categoryName) {
+                  <span>{{ item.categoryName }}</span>
+                }
+                <span>{{ item.productCode }}</span>
+              </div>
+
+              <div class="cart-item-controls">
+                <button type="button" class="button secondary" (click)="cart.decrease(item.productId)">-</button>
+                <span class="quantity">{{ item.quantity }}</span>
+                <button type="button" class="button secondary" (click)="cart.increase(item.productId)">+</button>
+
+                <div class="cart-prices">
+                  <span class="unit-price">Prezzo unitario {{ formatMoney(item.price, item.currencyCode) }}</span>
+                  <strong class="line-total">{{ formatMoney(lineTotal(item), item.currencyCode) }}</strong>
+                </div>
+              </div>
+
+              <div class="cart-footer">
+                <span class="cart-pill" [class.ok]="!!item.categorySlug">{{ item.categorySlug || 'Senza categoria' }}</span>
+                <a class="text-link" [routerLink]="['/shop', item.slug]">Apri dettaglio</a>
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+
+      <aside class="surface cart-summary">
+        <span class="cart-kicker">Riepilogo</span>
+        <h2>Totale ordine</h2>
+
+        <div class="summary-row">
+          <span>Articoli</span>
+          <strong>{{ cart.getCount() }}</strong>
+        </div>
+
+        <div class="summary-row">
+          <span>Prodotti distinti</span>
+          <strong>{{ cart.items.length }}</strong>
+        </div>
+
+        <div class="summary-row total">
+          <span>Totale</span>
+          <strong>{{ formatMoney(cart.getTotal(), currencyCode()) }}</strong>
+        </div>
+
+        <p class="muted summary-note">
+          Il totale viene calcolato sul prezzo effettivo salvato nel carrello.
+        </p>
+
+        @if (checkoutError) {
+          <div class="form-banner error">{{ checkoutError }}</div>
+        }
+
+        <button type="button" class="button" [disabled]="checkoutLoading || !cart.items.length" (click)="checkout()">
+          {{ checkoutLoading ? 'Reindirizzamento...' : 'Paga con Stripe' }}
+        </button>
+
+        <a class="button" routerLink="/shop">Aggiungi altri prodotti</a>
+      </aside>
+    </div>
+  }
+</section>

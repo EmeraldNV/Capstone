@@ -1,0 +1,121 @@
+<section class="container shop-layout">
+  <div class="shop-hero">
+    <div>
+      <span class="badge">Shop</span>
+      <h1>Prodotti disponibili</h1>
+      <p class="muted">I prodotti sono mostrati direttamente come card.</p>
+    </div>
+    @if (isStaff) {
+      <a class="button secondary shop-create-button" routerLink="/admin/products">
+        + Nuovo prodotto
+      </a>
+    }
+  </div>
+
+  <div class="shop-category-nav surface">
+    <button
+      type="button"
+      class="category-chip reset"
+      [class.active]="!selectedCategorySlug"
+      (click)="clearCategory()"
+    >
+      Tutti i prodotti
+    </button>
+
+    @for (group of categoryGroups; track group.rootLabel) {
+      <div class="category-group">
+        <div class="category-group-root">{{ group.rootLabel }}</div>
+        <div class="category-group-children">
+          @for (child of group.children; track child.slug) {
+            <button
+              type="button"
+              class="category-chip child"
+              [class.active]="isFilterActive(child.slug)"
+              (click)="selectCategory(child.slug)"
+            >
+              {{ child.label }}
+            </button>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="shop-filters surface">
+    <div class="filter-copy">
+      <strong>{{ selectedCategoryLabel() }}</strong>
+      <p class="muted">Visualizzazione diretta dei prodotti disponibili.</p>
+    </div>
+
+    <div class="filter-actions">
+      @if (selectedCategorySlug) {
+        <button type="button" class="button ghost" (click)="clearCategory()">Reset categoria</button>
+      }
+    </div>
+  </div>
+
+  @if (errorMessage) {
+    <div class="form-banner error">{{ errorMessage }}</div>
+  }
+
+  @if (loadingProducts && !products.length) {
+    <div class="loading-state surface loading-inline">
+      <div class="loading-bar"></div>
+      <p class="muted">
+        Caricamento prodotti in corso...
+      </p>
+    </div>
+  }
+
+  @if (loadingProducts && products.length) {
+    <div class="loading-state surface loading-inline">
+      <div class="loading-bar"></div>
+      <p class="muted">Aggiornamento prodotti in corso...</p>
+    </div>
+  }
+
+  @if (products.length) {
+    <div class="product-card-grid">
+      @for (product of products; track product.id) {
+        <article class="shop-card">
+          <figure class="shop-card-media">
+            @if (cardImage(product); as media) {
+              <img [src]="resolveMediaUrl(media.imageUrl)" [alt]="media.altText" />
+            } @else {
+              <div class="shop-card-empty">{{ product.name.charAt(0) }}</div>
+            }
+          </figure>
+
+          <div class="shop-card-copy">
+            <span class="shop-card-kicker">{{ product.categoryName || 'Senza categoria' }}</span>
+            <div class="product-name-row">
+              <h3>{{ product.name }}</h3>
+              @if (isStaff) {
+                <span class="manage-badge">Gestibile</span>
+              }
+            </div>
+            <p class="shop-card-description">{{ product.shortDescription || 'Nessuna descrizione breve disponibile.' }}</p>
+            <div class="shop-card-footer">
+              <strong>{{ formatMoney(product.effectivePrice, product.currencyCode) }}</strong>
+              <div class="shop-card-actions">
+                <button type="button" class="shop-card-cta secondary-cta" (click)="addToCart(product)">
+                  Aggiungi
+                </button>
+                <button type="button" class="shop-card-cta secondary-cta" [disabled]="quickBuyLoadingId === product.id" (click)="buyNow(product)">
+                  {{ quickBuyLoadingId === product.id ? 'Acquisto...' : 'Acquista subito' }}
+                </button>
+                <a class="shop-card-cta" [routerLink]="['/shop', product.slug]">Dettagli</a>
+              </div>
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+  } @else if (!loadingProducts) {
+    <p class="muted">Nessun prodotto disponibile.</p>
+  }
+
+  @if (quickBuyError) {
+    <div class="form-banner error">{{ quickBuyError }}</div>
+  }
+</section>
