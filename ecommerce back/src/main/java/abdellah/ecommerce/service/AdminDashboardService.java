@@ -17,6 +17,9 @@ import abdellah.ecommerce.domain.enums.OrderStatus;
 import abdellah.ecommerce.repository.CategoryRepository;
 import abdellah.ecommerce.repository.CustomerOrderRepository;
 import abdellah.ecommerce.repository.PaymentMethodRepository;
+import jakarta.persistence.criteria.JoinType;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,14 +58,14 @@ public class AdminDashboardService {
         LocalDate start = filters != null && filters.from() != null ? filters.from() : end.minusDays(30);
         Instant from = start.atStartOfDay().toInstant(ZoneOffset.UTC);
         Instant toExclusive = end.plusDays(1).atStartOfDay().toInstant(ZoneOffset.UTC);
+        Long categoryId = filters == null ? null : filters.categoryId();
+        String paymentMethodCode = normalize(filters == null ? null : filters.paymentMethodCode());
+        OrderStatus orderStatus = parseOrderStatus(filters == null ? null : filters.orderStatus());
+        OrderPaymentStatus paymentStatus = parsePaymentStatus(filters == null ? null : filters.paymentStatus());
 
-        List<CustomerOrder> orders = customerOrderRepository.findAdminDashboardOrders(
-                from,
-                toExclusive,
-                filters == null ? null : filters.categoryId(),
-                normalize(filters == null ? null : filters.paymentMethodCode()),
-                parseOrderStatus(filters == null ? null : filters.orderStatus()),
-                parsePaymentStatus(filters == null ? null : filters.paymentStatus())
+        List<CustomerOrder> orders = customerOrderRepository.findAll(
+                adminDashboardSpecification(from, toExclusive, categoryId, paymentMethodCode, orderStatus, paymentStatus),
+                Sort.by(Sort.Order.asc("placedAt"), Sort.Order.asc("id"))
         );
 
         String currency = orders.stream()
@@ -171,6 +174,45 @@ public class AdminDashboardService {
 
     private String normalize(String value) {
         return value == null || value.isBlank() ? null : value.trim().toUpperCase();
+    }
+
+    private Specification<CustomerOrder> adminDashboardSpecification(Instant from,
+                                                                     Instant toExclusive,
+                                                                     Long categoryId,
+                                                                     String paymentMethodCode,
+                                                                     OrderStatus orderStatus,
+                                                                     OrderPaymentStatus paymentStatus) {
+        return (root, query, criteriaBuilder) -> {
+            query.distinct(true);
+
+            List<jakarta.persistence.criteria.Predicate> predicates = new ArrayList<>();
+
+            if (from != null) {
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("placedAt"), from));
+            }
+            if (toExclusive != null) {
+                predicates.add(criteriaBuilder.lessThan(root.get("placedAt"), toExclusive));
+            }
+            if (categoryId != null) {
+                var itemsJoin = root.join("items", JoinType.LEFT);
+                var productJoin = itemsJoin.join("product", JoinType.LEFT);
+                var categoryJoin = productJoin.join("category", JoinType.LEFT);
+                predicates.add(criteriaBuilder.equal(categoryJoin.get("id"), categoryId));
+            }
+            if (paymentMethodCode != null) {
+                var transactionJoin = root.join("paymentTransactions", JoinType.LEFT);
+                var paymentMethodJoin = transactionJoin.join("paymentMethod", JoinType.LEFT);
+                predicates.add(criteriaBuilder.equal(paymentMethodJoin.get("methodCode"), paymentMethodCode));
+            }
+            if (orderStatus != null) {
+                predicates.add(criteriaBuilder.equal(root.get("orderStatus"), orderStatus));
+            }
+            if (paymentStatus != null) {
+                predicates.add(criteriaBuilder.equal(root.get("paymentStatus"), paymentStatus));
+            }
+
+            return criteriaBuilder.and(predicates.toArray(jakarta.persistence.criteria.Predicate[]::new));
+        };
     }
 
     private OrderStatus parseOrderStatus(String value) {

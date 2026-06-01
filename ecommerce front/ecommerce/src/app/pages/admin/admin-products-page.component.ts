@@ -98,8 +98,8 @@ export class AdminProductsPageComponent implements OnInit {
     this.message = '';
 
     const action$ = this.editingProduct
-      ? this.tagliaApi.updateProduct(this.editingProduct.id, request)
-      : this.tagliaApi.createProduct(request);
+      ? this.api.updateProduct(this.editingProduct.id, request)
+      : this.api.createProduct(request);
 
     action$.subscribe({
       next: (product) => {

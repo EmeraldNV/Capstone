@@ -1,7 +1,7 @@
 .admin-products-layout {
   display: grid;
   gap: 1.25rem;
-  padding-block: 1rem 2rem;
+  padding-block: 1.25rem 2rem;
 }
 
 .admin-hero {
@@ -32,9 +32,6 @@
   min-width: 0;
   overflow: hidden;
   padding: 1.25rem;
-  background: #0f1115;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 0;
 }
 
 .editor-panel,
@@ -111,10 +108,6 @@
   align-items: center;
   max-width: 100%;
   padding: 0.25rem 0.55rem;
-  border: none;
-  border-radius: 0;
-  background: #000;
-  color: #fff;
   font-size: 0.85rem;
 }
 
@@ -139,8 +132,8 @@
   width: 100%;
   aspect-ratio: 1 / 1;
   object-fit: cover;
-  border-radius: 0;
-  border: none;
+  border-radius: 8px;
+  border: 1px solid #dbe5f2;
 }
 
 .image-tile figcaption {
@@ -179,9 +172,9 @@
   width: 5rem;
   height: 5rem;
   overflow: hidden;
-  border-radius: 0;
-  border: none;
-  background: #000;
+  border-radius: 8px;
+  border: 1px solid #dbe5f2;
+  background: #eef4ff;
   flex: 0 0 auto;
 }
 
@@ -232,10 +225,7 @@
   display: inline-flex;
   align-items: center;
   padding: 0.2rem 0.5rem;
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--text);
   font-size: 0.78rem;
-  border-radius: 0;
 }
 
 .image-manager {
@@ -267,13 +257,14 @@
   display: grid;
   gap: 0.6rem;
   padding: 0.75rem;
-  background: #000;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #f8fbff;
+  border: 1px solid #dbe5f2;
+  border-radius: 8px;
 }
 
 .sortable-image.dragging {
   opacity: 0.72;
-  outline: 2px dashed rgba(255, 255, 255, 0.24);
+  outline: 2px dashed #9bb7ef;
 }
 
 .sortable-image img {
@@ -300,12 +291,12 @@
 }
 
 .form-banner.error {
-  background: #0e0e0e;
+  background: #fff3f1;
   color: var(--danger);
 }
 
 .form-banner.success {
-  background: #0e0e0e;
+  background: #edf9f3;
   color: var(--success);
 }
 

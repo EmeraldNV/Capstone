@@ -56,7 +56,7 @@
     </div>
 
     <div class="filters-actions">
-      <button class="button" type="submit" [disabled]="loading">Aggiorna</button>
+      <button class="button" type="submit" [disabled]="loading">{{ loading ? 'Aggiornamento...' : 'Aggiorna' }}</button>
       <button class="button ghost" type="button" (click)="reset()" [disabled]="loading">Reset</button>
     </div>
   </form>
@@ -71,6 +71,11 @@
   }
 
   @if (dashboard) {
+    <section class="surface results-banner">
+      <strong>{{ resultsCount }} risultati</strong>
+      <span class="muted">Ordini trovati con i filtri correnti.</span>
+    </section>
+
     <section class="kpis">
       <article class="surface kpi">
         <span class="badge">Fatturato</span>
@@ -94,96 +99,111 @@
       </article>
     </section>
 
-    <div class="grid">
-      <section class="surface panel chart-panel">
-        <div class="panel-header">
-          <div>
-            <h2>Andamento vendite</h2>
-            <p class="muted">{{ formatDate(dashboard.from) }} - {{ formatDate(dashboard.to) }}</p>
-          </div>
-          <span class="badge">{{ activeCategoryLabel() }}</span>
-        </div>
-
-        <svg viewBox="0 0 640 220" class="trend-chart" role="img" aria-label="Andamento vendite nel tempo">
-          <defs>
-            <linearGradient id="trendFill" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stop-color="rgba(255,255,255,0.28)" />
-              <stop offset="100%" stop-color="rgba(255,255,255,0)" />
-            </linearGradient>
-          </defs>
-          <path [attr.d]="trendPath()" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" />
-          @for (point of trendPoints(); track point.date) {
-            <circle [attr.cx]="point.x" [attr.cy]="point.y" r="4" fill="white">
-              <title>{{ point.date }}: {{ formatMoney(point.revenue, dashboard.currencyCode) }}</title>
-            </circle>
-          }
-        </svg>
+    @if (!hasDashboardData()) {
+      <section class="surface empty-state">
+        <span class="badge">0 risultati</span>
+        <h2>0 risultati</h2>
+        <p class="muted">
+          Nessun ordine trovato per i filtri selezionati. Modifica periodo, pagamento, categoria o stato.
+        </p>
       </section>
+    }
+
+    @if (hasDashboardData()) {
+      <div class="grid">
+        <section class="surface panel chart-panel">
+          <div class="panel-header">
+            <div>
+              <h2>Andamento vendite</h2>
+              <p class="muted">{{ formatDate(dashboard.from) }} - {{ formatDate(dashboard.to) }}</p>
+            </div>
+            <span class="badge">{{ activeCategoryLabel() }}</span>
+          </div>
+
+          <svg viewBox="0 0 640 220" class="trend-chart" role="img" aria-label="Andamento vendite nel tempo">
+            <defs>
+              <linearGradient id="trendFill" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="rgba(124,58,237,0.28)" />
+                <stop offset="100%" stop-color="rgba(255,255,255,0)" />
+              </linearGradient>
+            </defs>
+            <path
+              [attr.d]="trendPath()"
+              fill="none"
+              stroke="rgba(255,255,255,0.92)"
+              stroke-width="3"
+              stroke-linecap="round"
+            />
+            @for (point of trendPoints(); track point.date) {
+              <circle [attr.cx]="point.x" [attr.cy]="point.y" r="4" fill="#7c3aed">
+                <title>{{ point.date }}: {{ formatMoney(point.revenue, dashboard.currencyCode) }}</title>
+              </circle>
+            }
+          </svg>
+        </section>
+
+        <section class="surface panel">
+          <div class="panel-header">
+            <div>
+              <h2>Distribuzione per categoria</h2>
+              <p class="muted">Contributo sul fatturato filtrato.</p>
+            </div>
+          </div>
+
+          <div class="category-bars">
+            @for (bar of categoryBars(); track bar.label) {
+              <div class="category-row">
+                <div class="category-copy">
+                  <strong>{{ bar.label }}</strong>
+                  <span class="muted">{{ formatMoney(bar.revenue, dashboard.currencyCode) }}</span>
+                </div>
+                <div class="category-track">
+                  <span class="category-fill" [style.width.%]="bar.percent"></span>
+                </div>
+              </div>
+            } @empty {
+              <p class="muted">Nessun dato disponibile.</p>
+            }
+          </div>
+        </section>
+      </div>
 
       <section class="surface panel">
         <div class="panel-header">
           <div>
-            <h2>Distribuzione per categoria</h2>
-            <p class="muted">Contributo sul fatturato filtrato.</p>
+            <h2>Top prodotti</h2>
+            <p class="muted">Classifica ordinata per ricavo.</p>
           </div>
         </div>
 
-        <div class="category-bars">
-          @for (bar of categoryBars(); track bar.label) {
-            <div class="category-row">
-              <div class="category-copy">
-                <strong>{{ bar.label }}</strong>
-                <span class="muted">{{ formatMoney(bar.revenue, dashboard.currencyCode) }}</span>
-              </div>
-              <div class="category-track">
-                <span class="category-fill" [style.width.%]="bar.percent"></span>
-              </div>
-            </div>
-          } @empty {
-            <p class="muted">Nessun dato disponibile.</p>
-          }
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Prodotto</th>
+                <th>Slug</th>
+                <th>Quantita</th>
+                <th>Ricavo</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of dashboard.topProducts; track item.productId) {
+                <tr>
+                  <td>{{ item.productName }}</td>
+                  <td>{{ item.slug }}</td>
+                  <td>{{ item.quantity }}</td>
+                  <td>{{ formatMoney(item.revenue, dashboard.currencyCode) }}</td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="4" class="muted">Nessun prodotto disponibile.</td>
+                </tr>
+              }
+            </tbody>
+          </table>
         </div>
       </section>
-    </div>
-
-    <section class="surface panel">
-      <div class="panel-header">
-        <div>
-          <h2>Top prodotti</h2>
-          <p class="muted">Classifica ordinata per ricavo.</p>
-        </div>
-      </div>
-
-      <div class="table-wrap">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Prodotto</th>
-              <th>Slug</th>
-              <th>Quantità</th>
-              <th>Ricavo</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (item of dashboard.topProducts; track item.productId) {
-              <tr>
-                <td>{{ item.productName }}</td>
-                <td>{{ item.slug }}</td>
-                <td>{{ item.quantity }}</td>
-                <td>{{ formatMoney(item.revenue, dashboard.currencyCode) }}</td>
-              </tr>
-            } @empty {
-              <tr>
-                <td colspan="4" class="muted">Nessun prodotto disponibile.</td>
-              </tr>
-            }
-          </tbody>
-        </table>
-      </div>
-    </section>
+    }
   }
 
-  @if (loading && !dashboard) {
-    <div class="surface banner">Caricamento statistiche in corso...</div>
-  }
 </section>

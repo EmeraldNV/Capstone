@@ -1,7 +1,7 @@
 .admin-page {
   display: grid;
-  gap: 1rem;
-  padding: 1rem;
+  gap: 1.25rem;
+  padding: 1.25rem;
 }
 
 .page-header h1 {
@@ -19,7 +19,7 @@
 .toolbar {
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: end;
-  padding: 1rem;
+  padding: 1.1rem;
 }
 
 .toolbar-actions {
@@ -36,7 +36,7 @@
 
 .list-panel,
 .forms-panel {
-  padding: 1rem;
+  padding: 1.1rem;
   min-width: 0;
 }
 
@@ -68,7 +68,7 @@
 }
 
 .selected {
-  background: rgba(255, 255, 255, 0.04);
+  background: #f2f7ff;
 }
 
 .audit-list {
@@ -81,7 +81,7 @@
   justify-content: space-between;
   gap: 1rem;
   padding: 0.75rem 0;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid #e4ebf3;
 }
 
 .audit-row:first-child {

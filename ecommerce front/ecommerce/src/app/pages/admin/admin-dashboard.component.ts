@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { finalize, Subscription } from 'rxjs';
 import {
   AdminDashboardFilterOptionsResponse,
   AdminDashboardResponse,
@@ -20,12 +21,15 @@ import { summarizeHttpError } from '../../core/utils/http-errors';
 export class AdminDashboardComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly api = inject(AdminDashboardApiService);
+  private filtersRequest: Subscription | null = null;
+  private dashboardRequest: Subscription | null = null;
 
   protected loading = false;
   protected errorMessage = '';
   protected errorDetails: string[] = [];
   protected filterOptions: AdminDashboardFilterOptionsResponse | null = null;
   protected dashboard: AdminDashboardResponse | null = null;
+  protected resultsCount = 0;
 
   readonly form = this.fb.group({
     from: [''],
@@ -38,7 +42,6 @@ export class AdminDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadFilterOptions();
-    this.loadDashboard();
   }
 
   submit(): void {
@@ -131,19 +134,21 @@ export class AdminDashboardComponent implements OnInit {
     return match?.label ?? selected;
   }
 
+  protected hasDashboardData(): boolean {
+    return this.resultsCount > 0;
+  }
+
   private loadFilterOptions(): void {
-    this.api.getFilterOptions().subscribe({
+    this.filtersRequest?.unsubscribe();
+    this.filtersRequest = this.api.getFilterOptions().subscribe({
       next: (options) => {
         this.filterOptions = options;
-        const today = new Date();
-        const start = new Date();
-        start.setDate(today.getDate() - 30);
-        this.form.patchValue({
-          from: this.toInputDate(start),
-          to: this.toInputDate(today),
-        });
+        this.applyDefaultDateRange();
+        this.loadDashboard();
       },
       error: (error) => {
+        this.applyDefaultDateRange();
+        this.loadDashboard();
         const summary = summarizeHttpError(error, 'Caricamento filtri dashboard fallito.');
         this.errorMessage = summary.message;
         this.errorDetails = summary.details;
@@ -151,13 +156,24 @@ export class AdminDashboardComponent implements OnInit {
     });
   }
 
+  private applyDefaultDateRange(): void {
+    const today = new Date();
+    const start = new Date();
+    start.setDate(today.getDate() - 30);
+    this.form.patchValue({
+      from: this.toInputDate(start),
+      to: this.toInputDate(today),
+    });
+  }
+
   private loadDashboard(): void {
+    this.dashboardRequest?.unsubscribe();
     this.loading = true;
     this.errorMessage = '';
     this.errorDetails = [];
 
     const value = this.form.getRawValue();
-    this.api
+    this.dashboardRequest = this.api
       .getDashboard({
         from: value.from || null,
         to: value.to || null,
@@ -166,13 +182,18 @@ export class AdminDashboardComponent implements OnInit {
         orderStatus: value.orderStatus || null,
         paymentStatus: value.paymentStatus || null,
       })
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+        }),
+      )
       .subscribe({
         next: (dashboard) => {
-          this.loading = false;
           this.dashboard = dashboard;
+          this.resultsCount = dashboard.totalSales ?? 0;
         },
         error: (error) => {
-          this.loading = false;
+          this.resultsCount = 0;
           const summary = summarizeHttpError(error, 'Caricamento statistiche fallito.');
           this.errorMessage = summary.message;
           this.errorDetails = summary.details;

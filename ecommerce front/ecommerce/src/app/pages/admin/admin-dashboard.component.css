@@ -1,7 +1,35 @@
 .admin-page {
   display: grid;
-  gap: 1rem;
-  padding: 1rem;
+  gap: 1.25rem;
+  padding: 1.25rem;
+  color: #fff;
+}
+
+.admin-page .surface {
+  background: #0d0d0d;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: none;
+}
+
+.admin-page .badge {
+  background: #7c3aed;
+  color: #fff;
+  border: none;
+}
+
+.admin-page .muted {
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.page-header {
+  padding: 1.4rem 1.5rem;
+  background:
+    linear-gradient(90deg, rgba(5, 5, 5, 0.94) 0%, rgba(5, 5, 5, 0.76) 55%, rgba(5, 5, 5, 0.96) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.page-header p {
+  max-width: 40rem;
 }
 
 .page-header h1 {
@@ -13,8 +41,36 @@
 .filters {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 0.85rem;
-  padding: 1rem;
+  gap: 1rem;
+  padding: 1.1rem;
+  background: #0d0d0d;
+}
+
+.filters :is(label, input, select) {
+  color: #fff;
+}
+
+.filters input,
+.filters select {
+  background: #000;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.filters input:focus,
+.filters select:focus {
+  outline-color: rgba(124, 58, 237, 0.28);
+  border-color: rgba(124, 58, 237, 0.55);
+}
+
+.filters .button {
+  background: #7c3aed;
+  border-color: #7c3aed;
+}
+
+.filters .button.ghost {
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.14);
 }
 
 .filters-actions {
@@ -33,6 +89,17 @@
   display: grid;
   gap: 0.45rem;
   padding: 1rem;
+  align-content: start;
+  background: #0d0d0d;
+}
+
+.results-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.95rem 1.1rem;
+  background: #0d0d0d;
 }
 
 .kpi strong {
@@ -65,14 +132,16 @@
 .panel-header h2 {
   margin: 0;
   font-size: 1.15rem;
+  color: #fff;
 }
 
 .trend-chart {
   width: 100%;
   height: auto;
   display: block;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid var(--border);
+  background: #050505;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
 }
 
 .category-bars {
@@ -96,16 +165,30 @@
   height: 0.55rem;
   background: rgba(255, 255, 255, 0.08);
   overflow: hidden;
+  border-radius: 999px;
 }
 
 .category-fill {
   display: block;
   height: 100%;
-  background: white;
+  background: linear-gradient(90deg, #7c3aed 0%, #a855f7 100%);
+  border-radius: 999px;
 }
 
 .table-wrap {
   overflow-x: auto;
+}
+
+.empty-state {
+  display: grid;
+  gap: 0.8rem;
+  padding: 1.25rem 1.35rem;
+  background: #0d0d0d;
+}
+
+.empty-state h2 {
+  margin: 0;
+  font-size: 1.2rem;
 }
 
 @media (max-width: 1180px) {

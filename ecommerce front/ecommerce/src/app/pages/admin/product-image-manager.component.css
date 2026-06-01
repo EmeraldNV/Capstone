@@ -43,8 +43,6 @@
   display: inline-flex;
   align-items: center;
   padding: 0.25rem 0.5rem;
-  background: #000;
-  color: #fff;
   font-size: 0.8rem;
 }
 
@@ -56,7 +54,7 @@
 
 .primary-select span {
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.72);
+  color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
@@ -65,10 +63,10 @@
   width: 100%;
   min-height: 2.3rem;
   padding: 0.4rem 0.55rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 0;
-  background: #111;
-  color: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
 }
 
 .pond-host {
@@ -85,8 +83,6 @@
   display: inline-flex;
   align-items: center;
   padding: 0.3rem 0.55rem;
-  background: #000;
-  color: #fff;
   font-size: 0.85rem;
 }
 
@@ -100,13 +96,14 @@
   display: grid;
   gap: 0.6rem;
   padding: 0.6rem;
-  background: #000;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #f8fbff;
+  border: 1px solid #dbe5f2;
+  border-radius: 8px;
 }
 
 .sortable-image.dragging {
   opacity: 0.72;
-  outline: 2px dashed rgba(255, 255, 255, 0.24);
+  outline: 2px dashed #9bb7ef;
 }
 
 .sortable-image img {
