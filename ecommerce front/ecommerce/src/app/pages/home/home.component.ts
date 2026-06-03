@@ -34,12 +34,12 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   readonly featureCards = [
     {
-      title: 'Nuovi arrivi',
-      description: 'Lo shop pubblico mostra i prodotti con immagine, prezzo e accesso al dettaglio.',
+      title: 'HIGH-PERFORMANCE OUTSOLE',
+      description: 'The Apex Power outsole is engineered for precision. Its ultra-thin design brings you closer to the ground for unmatched stability and control. Lightweight yet structured, it maintains flexibility in both linear and lateral directions—allowing your feet to move naturally, activate properly and grow stronger over time. Extended heel and metatarsal zones—borrowed from Olympic weightlifting shoes—offer increased surface area for a more stable base. Combined with a true zero-drop platform, this outsole keeps your body in optimal alignment for balance and efficient force transfer under heavy load.',
     },
     {
-      title: 'Layout scuro',
-      description: 'Il tratto dominante resta quello del riferimento: sfondo nero, tipografia forte e contrasto alto.',
+      title: 'Anatomical Toe Box',
+      description: 'The Apex Power toe box is designed to reflect the natural shape of the foot, giving your toes room to splay for enhanced balance and grounded stability under load. While the forefoot stays free, the heel and midfoot are locked in for a secure, precise fit—ensuring proper alignment and total control through every rep.',
     },
   ];
 
