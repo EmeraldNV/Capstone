@@ -36,7 +36,7 @@ export class LoginPageComponent {
   submit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
-      this.toast.warning('Controlla i campi compilati prima di inviare il form.', 'Form incompleto');
+      this.toast.warning('Check the completed fields before submitting the form.', 'Incomplete form');
       return;
     }
 
@@ -52,8 +52,8 @@ export class LoginPageComponent {
       .subscribe({
         next: (response) => {
           this.session.applyAuthResponse(response);
-          this.successMessage = `Accesso completato per ${response.user.email}.`;
-          this.toast.success(`Benvenuto, ${response.user.email}.`, 'Login riuscito');
+          this.successMessage = `Signed in as ${response.user.email}.`;
+          this.toast.success(`Welcome, ${response.user.email}.`, 'Sign in successful');
           void this.router.navigateByUrl(response.user.roles.includes('ADMIN') ? '/admin' : '/account/profile');
         },
         error: (error) => {

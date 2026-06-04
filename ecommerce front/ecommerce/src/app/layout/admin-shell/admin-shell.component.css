@@ -2,10 +2,8 @@
   display: grid;
   grid-template-columns: 18rem minmax(0, 1fr);
   min-height: calc(100vh - 0px);
-  background:
-    radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.04), transparent 34%),
-    linear-gradient(180deg, #0a0a0a 0%, #050505 42%, #050505 100%);
-  color: #fff;
+  background: var(--admin-bg);
+  color: var(--text);
 }
 
 .admin-sidebar {
@@ -13,14 +11,15 @@
   align-content: start;
   gap: 1.25rem;
   padding: 1.25rem;
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
-  background: #000;
+  border-right: 1px solid var(--admin-sidebar-border);
+  background: var(--admin-sidebar-bg);
 }
 
 .sidebar-brand h1 {
   margin: 0.55rem 0 0.4rem;
   font-size: 1.4rem;
   line-height: 1.1;
+  color: var(--admin-sidebar-text);
 }
 
 .sidebar-nav {
@@ -32,43 +31,44 @@
   display: grid;
   gap: 0.65rem;
   padding-top: 0.8rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--admin-sidebar-border);
 }
 
 .nav-link {
   display: flex;
   align-items: center;
   padding: 0.8rem 0.9rem;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: #111;
-  color: #fff;
+  border: 1px solid var(--admin-sidebar-border);
+  background: var(--admin-sidebar-surface);
+  color: var(--admin-sidebar-text);
   text-decoration: none;
-  border-radius: 0;
-  transition:
-    background-color 140ms ease,
-    border-color 140ms ease,
-    color 140ms ease,
-    transform 140ms ease;
+  border-radius: 10px;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, transform 140ms ease;
 }
 
 .nav-link:hover {
-  background: #181818;
-  border-color: rgba(124, 58, 237, 0.5);
-  color: #fff;
+  background: rgba(36, 87, 214, 0.24);
+  border-color: rgba(36, 87, 214, 0.5);
+  color: var(--admin-sidebar-text);
 }
 
 .nav-link.active {
-  border-color: #7c3aed;
-  background: #111;
-  color: #fff;
-  box-shadow: inset 3px 0 0 #7c3aed;
+  border-color: var(--admin-sidebar-active);
+  background: rgba(36, 87, 214, 0.26);
+  color: var(--admin-sidebar-text);
+  box-shadow: inset 3px 0 0 var(--admin-sidebar-active);
 }
 
 .sidebar-meta {
   display: grid;
   gap: 0.4rem;
   padding-top: 0.8rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--admin-sidebar-border);
+}
+
+.sidebar-brand .muted,
+.sidebar-meta .muted {
+  color: var(--admin-sidebar-muted);
 }
 
 .admin-content {
@@ -83,6 +83,6 @@
 
   .admin-sidebar {
     border-right: 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid var(--admin-sidebar-border);
   }
 }

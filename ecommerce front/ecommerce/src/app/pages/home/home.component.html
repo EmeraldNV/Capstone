@@ -1,26 +1,20 @@
 <section class="hero" id="shop">
   <div class="hero-backdrop"></div>
-
   <div class="hero-inner container">
     <div class="hero-copy">
-      
       <h1>AVANCUS</h1>
-      <p class="hero-text">
-        Enhance performance with innovative design, technical fabrics and exceptional quality — all tested by world-class athletes 
-      </p>
-
+      <p class="hero-text">Enhance performance with innovative design, technical fabrics and exceptional quality, all tested by world-class athletes.</p>
       <div class="hero-actions">
         <a class="hero-button solid" routerLink="/shop">Shop now</a>
         <a class="hero-button outline" href="#company">View lookbook</a>
       </div>
     </div>
-
     <div class="hero-visual">
       <figure class="hero-frame tall">
-        <img src="images/hero-profile.png" alt="Atleta in posa con scarpa sollevata" />
+        <img src="images/hero-profile.png" alt="Athlete posing with lifted shoe" />
       </figure>
       <figure class="hero-frame wide">
-        <img src="images/hero-lifter.png" alt="Atleta in pedana durante il sollevamento" />
+        <img src="images/hero-lifter.png" alt="Athlete on the platform during a lift" />
       </figure>
     </div>
   </div>
@@ -31,67 +25,44 @@
     <p class="section-kicker"></p>
     <h2>Latest Products</h2>
   </div>
-
   @if (loadingProducts) {
     <p class="muted">Loading...</p>
   } @else if (productError) {
     <div class="form-banner error">{{ productError }}</div>
   } @else if (!latestProducts.length) {
-    <p class="muted">No product available.</p>
+    <p class="muted">No products available.</p>
   } @else {
     <div class="products-grid">
       @for (product of latestProducts; track product.id; let index = $index) {
         <article class="product-card" [class.featured]="index === 0">
           <a class="product-media" [routerLink]="['/shop', product.slug]">
-            @if (productImage(product)) {
-              <img [src]="productImage(product)" [alt]="product.name" />
-            } @else {
-              <div class="product-empty">{{ product.name.charAt(0) }}</div>
-            }
+            @if (productImage(product)) { <img [src]="productImage(product)" [alt]="product.name" /> } @else { <div class="product-empty">{{ product.name.charAt(0) }}</div> }
           </a>
-
           <div class="product-copy">
-            <div class="product-head">
-              <div>
-                <h3>{{ product.name }}</h3>
-              </div>
-            </div>
-
-            <p>{{ product.shortDescription || 'Scheda prodotto disponibile nello shop.' }}</p>
-
+            <div class="product-head"><div><h3>{{ product.name }}</h3></div></div>
+            <p>{{ product.shortDescription || 'Product details are available in the shop.' }}</p>
             <div class="product-footer">
               <strong>{{ formatMoney(product.effectivePrice, product.currencyCode) }}</strong>
-              <a class="hero-button solid" [routerLink]="['/shop', product.slug]">Dettagli</a>
+              <a class="hero-button solid" [routerLink]="['/shop', product.slug]">Details</a>
             </div>
           </div>
         </article>
       }
     </div>
   }
-
   <div class="feature-row">
-    <article class="feature-pill">
-      <h3>{{ featureCards[0].title }}</h3>
-      <p>{{ featureCards[0].description }}</p>
-    </article>
-
-    <article class="feature-carousel" aria-label="Carousel home">
+    <article class="feature-pill"><h3>{{ featureCards[0].title }}</h3><p>{{ featureCards[0].description }}</p></article>
+    <article class="feature-carousel" aria-label="Home carousel">
       <div class="feature-carousel-viewport">
         <div class="feature-carousel-track" [style.transform]="homeCarouselTransform()">
           @for (image of homeCarouselImages; track image.id) {
-            <div class="feature-carousel-slide">
-              <img [src]="image.imageUrl" [alt]="image.altText || 'Carousel home'" />
-            </div>
+            <div class="feature-carousel-slide"><img [src]="image.imageUrl" [alt]="image.altText || 'Home carousel'" /></div>
           } @empty {
             <div class="feature-carousel-slide feature-carousel-empty"></div>
           }
         </div>
       </div>
     </article>
-
-    <article class="feature-pill">
-      <h3>{{ featureCards[1].title }}</h3>
-      <p>{{ featureCards[1].description }}</p>
-    </article>
+    <article class="feature-pill"><h3>{{ featureCards[1].title }}</h3><p>{{ featureCards[1].description }}</p></article>
   </div>
 </section>

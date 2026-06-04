@@ -20,6 +20,8 @@
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: end;
   padding: 1.1rem;
+  background: var(--admin-panel);
+  border: 1px solid var(--admin-panel-border);
 }
 
 .toolbar-actions {
@@ -57,6 +59,7 @@
 .panel-block h2 {
   margin: 0;
   font-size: 1.15rem;
+  color: var(--text);
 }
 
 .table-wrap {
@@ -68,7 +71,7 @@
 }
 
 .selected {
-  background: #f2f7ff;
+  background: var(--accent-soft);
 }
 
 .audit-list {
@@ -81,7 +84,7 @@
   justify-content: space-between;
   gap: 1rem;
   padding: 0.75rem 0;
-  border-top: 1px solid #e4ebf3;
+  border-top: 1px solid var(--admin-panel-border);
 }
 
 .audit-row:first-child {

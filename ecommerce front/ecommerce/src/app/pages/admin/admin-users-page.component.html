@@ -1,20 +1,20 @@
 <section class="admin-page">
   <header class="page-header">
     <div>
-      <span class="badge">Utenti</span>
-      <h1>Gestione utenti</h1>
-      <p class="muted">Creazione, aggiornamento stato/ruoli e cronologia azioni admin.</p>
+      <span class="badge">Users</span>
+      <h1>User management</h1>
+      <p class="muted">Create users, update status and roles, and review admin activity logs.</p>
     </div>
   </header>
 
   <div class="toolbar surface">
     <div class="field search">
-      <label for="user-search">Cerca email</label>
+      <label for="user-search">Search email</label>
       <input id="user-search" type="text" [(ngModel)]="search" name="search" />
     </div>
     <div class="toolbar-actions">
-      <button class="button" type="button" (click)="searchUsers()" [disabled]="loading">Filtra</button>
-      <button class="button ghost" type="button" (click)="refresh()" [disabled]="loading">Aggiorna</button>
+      <button class="button" type="button" (click)="searchUsers()" [disabled]="loading">Filter</button>
+      <button class="button ghost" type="button" (click)="refresh()" [disabled]="loading">Refresh</button>
     </div>
   </div>
 
@@ -35,8 +35,8 @@
     <section class="surface panel list-panel">
       <div class="panel-header">
         <div>
-          <h2>Lista utenti</h2>
-          <p class="muted">{{ users.length }} record</p>
+          <h2>User list</h2>
+          <p class="muted">{{ users.length }} records</p>
         </div>
       </div>
 
@@ -45,9 +45,9 @@
           <thead>
             <tr>
               <th>Email</th>
-              <th>Ruoli</th>
-              <th>Stato</th>
-              <th>Verificato</th>
+              <th>Roles</th>
+              <th>Status</th>
+              <th>Verified</th>
               <th></th>
             </tr>
           </thead>
@@ -57,15 +57,15 @@
                 <td>{{ user.email }}</td>
                 <td>{{ user.roles.join(', ') || '-' }}</td>
                 <td>{{ user.status }}</td>
-                <td>{{ user.emailVerified ? 'Si' : 'No' }}</td>
+                <td>{{ user.emailVerified ? 'Yes' : 'No' }}</td>
                 <td class="row-actions">
                   <button class="button secondary" type="button" (click)="selectUser(user)">Modifica</button>
-                  <button class="button ghost" type="button" (click)="deactivateUser(user)">Disattiva</button>
+                  <button class="button ghost" type="button" (click)="deactivateUser(user)">Deactivate</button>
                 </td>
               </tr>
             } @empty {
               <tr>
-                <td colspan="5" class="muted">Nessun utente trovato.</td>
+                <td colspan="5" class="muted">No users found.</td>
               </tr>
             }
           </tbody>
@@ -75,7 +75,7 @@
 
     <section class="surface panel forms-panel">
       <div class="panel-block">
-        <h2>Nuovo utente admin</h2>
+        <h2>New admin user</h2>
         <form class="form-grid" [formGroup]="createForm" (ngSubmit)="submitCreate()">
           <div class="field">
             <label>Email</label>
@@ -86,7 +86,7 @@
             <input type="password" formControlName="password" />
           </div>
           <div class="field">
-            <label>Stato</label>
+            <label>Status</label>
             <select formControlName="status">
               <option value="ACTIVE">ACTIVE</option>
               <option value="INACTIVE">INACTIVE</option>
@@ -95,30 +95,30 @@
             </select>
           </div>
           <div class="field">
-            <label>Ruoli</label>
+            <label>Roles</label>
             <input type="text" formControlName="roleCodes" placeholder="ADMIN, STAFF" />
           </div>
           <label class="toggle">
             <input type="checkbox" formControlName="emailVerified" />
-            <span>Email verificata</span>
+            <span>Email verified</span>
           </label>
           <div class="actions">
-            <button class="button" type="submit" [disabled]="saving">Crea utente</button>
+            <button class="button" type="submit" [disabled]="saving">Create user</button>
           </div>
         </form>
       </div>
 
       <div class="panel-block">
-        <h2>Modifica utente</h2>
+        <h2>Edit user</h2>
         @if (selectedUser) {
-          <p class="muted">Utente selezionato: {{ selectedUser.email }}</p>
+          <p class="muted">Selected user: {{ selectedUser.email }}</p>
           <form class="form-grid" [formGroup]="editForm" (ngSubmit)="submitUpdate()">
             <div class="field">
               <label>Email</label>
               <input type="email" formControlName="email" />
             </div>
             <div class="field">
-              <label>Stato</label>
+              <label>Status</label>
               <select formControlName="status">
                 <option value="ACTIVE">ACTIVE</option>
                 <option value="INACTIVE">INACTIVE</option>
@@ -127,19 +127,19 @@
               </select>
             </div>
             <div class="field">
-              <label>Ruoli</label>
+              <label>Roles</label>
               <input type="text" formControlName="roleCodes" placeholder="ADMIN, STAFF, CUSTOMER" />
             </div>
             <label class="toggle">
               <input type="checkbox" formControlName="emailVerified" />
-              <span>Email verificata</span>
+              <span>Email verified</span>
             </label>
             <div class="actions">
               <button class="button" type="submit" [disabled]="saving">Salva modifiche</button>
             </div>
           </form>
         } @else {
-          <p class="muted">Seleziona un utente dalla tabella per modificarlo.</p>
+          <p class="muted">Select a user from the table to edit it.</p>
         }
       </div>
     </section>
@@ -148,8 +148,8 @@
   <section class="surface panel">
     <div class="panel-header">
       <div>
-        <h2>Cronologia azioni admin</h2>
-        <p class="muted">Ultime operazioni sugli utenti.</p>
+        <h2>Admin activity log</h2>
+        <p class="muted">Latest operations on users.</p>
       </div>
     </div>
 
@@ -166,7 +166,7 @@
           </div>
         </article>
       } @empty {
-        <p class="muted">Nessun log disponibile.</p>
+        <p class="muted">No logs available.</p>
       }
     </div>
   </section>

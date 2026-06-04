@@ -15,9 +15,7 @@ export function summarizeHttpError(error: unknown, fallbackMessage: string): Err
 
     if (payload && typeof payload === 'object') {
       const details = Array.isArray(payload.details)
-        ? payload.details
-            .map((detail) => `${detail.field}: ${detail.message}`)
-            .filter((detail) => detail.trim().length > 0)
+        ? payload.details.map((detail) => `${detail.field}: ${detail.message}`).filter((detail) => detail.trim().length > 0)
         : [];
 
       return {
@@ -54,51 +52,51 @@ export function mapAuthErrorMessage(error: unknown): { title: string; message: s
     switch (error.status) {
       case 400:
         return {
-          title: 'Richiesta non valida',
-          message: responseMessage?.trim() || 'Controlla i dati inseriti e riprova.',
+          title: 'Invalid request',
+          message: responseMessage?.trim() || 'Check the submitted data and try again.',
         };
       case 401:
         return {
-          title: 'Credenziali non valide',
-          message: 'Email o password non corretti.',
+          title: 'Invalid credentials',
+          message: 'Incorrect email or password.',
         };
       case 403:
         if (code === 'EMAIL_NOT_VERIFIED') {
           return {
-            title: 'Account non verificato',
-            message: 'Verifica la tua email prima di accedere.',
+            title: 'Account not verified',
+            message: 'Verify your email before signing in.',
           };
         }
         if (code === 'ACCOUNT_DISABLED' || code === 'ACCOUNT_LOCKED') {
           return {
-            title: 'Account bloccato',
-            message: 'Il tuo account è inattivo o bloccato.',
+            title: 'Account locked',
+            message: 'Your account is inactive or locked.',
           };
         }
         return {
-          title: 'Accesso negato',
-          message: responseMessage?.trim() || 'Non hai i permessi per completare questa operazione.',
+          title: 'Access denied',
+          message: responseMessage?.trim() || 'You do not have permission to complete this action.',
         };
       case 404:
         return {
-          title: 'Utente non trovato',
-          message: 'Nessun account corrisponde all’email inserita.',
+          title: 'User not found',
+          message: 'No account matches the submitted email address.',
         };
       case 409:
         return {
-          title: 'Conflitto dati',
-          message: responseMessage?.trim() || 'I dati inviati non possono essere salvati.',
+          title: 'Data conflict',
+          message: responseMessage?.trim() || 'The submitted data could not be saved.',
         };
       default:
         return {
-          title: 'Errore server',
-          message: responseMessage?.trim() || 'Si è verificato un errore inatteso.',
+          title: 'Server error',
+          message: responseMessage?.trim() || 'An unexpected error occurred.',
         };
     }
   }
 
   return {
-    title: 'Errore',
-    message: error instanceof Error && error.message.trim() ? error.message : 'Si è verificato un errore inatteso.',
+    title: 'Error',
+    message: error instanceof Error && error.message.trim() ? error.message : 'An unexpected error occurred.',
   };
 }

@@ -7,7 +7,7 @@
         @if (session.isAuthenticated()) {
           {{ session.user()?.email }}
         } @else {
-          Sessione non disponibile
+          Session unavailable
         }
       </p>
     </div>
@@ -19,7 +19,7 @@
     </nav>
 
     <div class="sidebar-section">
-      <span class="badge">Sito pubblico</span>
+      <span class="badge">Public site</span>
       <nav class="sidebar-nav">
         @for (item of storefrontLinks; track item.path) {
           <a [routerLink]="item.path" class="nav-link">{{ item.label }}</a>
@@ -28,7 +28,7 @@
     </div>
 
     <div class="sidebar-meta">
-      <span class="badge">Ruoli</span>
+      <span class="badge">Roles</span>
       <p class="muted">{{ session.roles().join(', ') }}</p>
     </div>
   </aside>

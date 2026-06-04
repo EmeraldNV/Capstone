@@ -2,30 +2,29 @@
   display: grid;
   gap: 1.25rem;
   padding: 1.25rem;
-  color: #fff;
+  color: var(--text);
 }
 
 .admin-page .surface {
-  background: #0d0d0d;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: none;
+  background: var(--admin-panel);
+  border: 1px solid var(--admin-panel-border);
+  box-shadow: var(--shadow);
 }
 
 .admin-page .badge {
-  background: #7c3aed;
-  color: #fff;
-  border: none;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  border: 1px solid #c7d7fb;
 }
 
 .admin-page .muted {
-  color: rgba(255, 255, 255, 0.68);
+  color: var(--muted);
 }
 
 .page-header {
   padding: 1.4rem 1.5rem;
-  background:
-    linear-gradient(90deg, rgba(5, 5, 5, 0.94) 0%, rgba(5, 5, 5, 0.76) 55%, rgba(5, 5, 5, 0.96) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(135deg, #ffffff 0%, var(--admin-panel-alt) 100%);
+  border: 1px solid var(--admin-panel-border);
 }
 
 .page-header p {
@@ -43,34 +42,7 @@
   grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 1rem;
   padding: 1.1rem;
-  background: #0d0d0d;
-}
-
-.filters :is(label, input, select) {
-  color: #fff;
-}
-
-.filters input,
-.filters select {
-  background: #000;
-  border-color: rgba(255, 255, 255, 0.12);
-}
-
-.filters input:focus,
-.filters select:focus {
-  outline-color: rgba(124, 58, 237, 0.28);
-  border-color: rgba(124, 58, 237, 0.55);
-}
-
-.filters .button {
-  background: #7c3aed;
-  border-color: #7c3aed;
-}
-
-.filters .button.ghost {
-  background: transparent;
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: var(--admin-panel);
 }
 
 .filters-actions {
@@ -90,7 +62,7 @@
   gap: 0.45rem;
   padding: 1rem;
   align-content: start;
-  background: #0d0d0d;
+  background: var(--admin-panel-alt);
 }
 
 .results-banner {
@@ -99,7 +71,7 @@
   justify-content: space-between;
   gap: 0.75rem;
   padding: 0.95rem 1.1rem;
-  background: #0d0d0d;
+  background: var(--admin-panel-alt);
 }
 
 .kpi strong {
@@ -132,15 +104,15 @@
 .panel-header h2 {
   margin: 0;
   font-size: 1.15rem;
-  color: #fff;
+  color: var(--text);
 }
 
 .trend-chart {
   width: 100%;
   height: auto;
   display: block;
-  background: #050505;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #ffffff;
+  border: 1px solid var(--admin-panel-border);
   border-radius: 8px;
 }
 
@@ -163,7 +135,7 @@
 .category-track {
   width: 100%;
   height: 0.55rem;
-  background: rgba(255, 255, 255, 0.08);
+  background: #e9eef4;
   overflow: hidden;
   border-radius: 999px;
 }
@@ -171,7 +143,7 @@
 .category-fill {
   display: block;
   height: 100%;
-  background: linear-gradient(90deg, #7c3aed 0%, #a855f7 100%);
+  background: linear-gradient(90deg, var(--accent) 0%, #5d84ea 100%);
   border-radius: 999px;
 }
 
@@ -183,7 +155,7 @@
   display: grid;
   gap: 0.8rem;
   padding: 1.25rem 1.35rem;
-  background: #0d0d0d;
+  background: var(--admin-panel-alt);
 }
 
 .empty-state h2 {

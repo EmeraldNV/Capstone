@@ -35,7 +35,7 @@ export class RegisterPageComponent {
   submit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
-      this.toast.warning('Controlla i campi compilati prima di inviare il form.', 'Form incompleto');
+      this.toast.warning('Check the completed fields before submitting the form.', 'Incomplete form');
       return;
     }
 
@@ -55,14 +55,14 @@ export class RegisterPageComponent {
       .subscribe({
         next: (response) => {
           this.successMessage = response.message;
-          this.toast.success('Controlla la tua casella email per verificare l’account.', 'Registrazione completata');
+          this.toast.success('Check your email inbox to verify the account.', 'Registration completed');
           void this.router.navigateByUrl('/auth/login');
         },
         error: (error) => {
           const summary = summarizeHttpError(error, 'Registration failed.');
           this.errorMessage = summary.message;
           this.errorDetails = summary.details;
-          this.toast.error(summary.message, 'Registrazione fallita');
+          this.toast.error(summary.message, 'Registration failed');
         },
       });
   }

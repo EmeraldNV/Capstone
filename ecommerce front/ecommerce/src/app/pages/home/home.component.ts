@@ -35,11 +35,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   readonly featureCards = [
     {
       title: 'HIGH-PERFORMANCE OUTSOLE',
-      description: 'The Apex Power outsole is engineered for precision. Its ultra-thin design brings you closer to the ground for unmatched stability and control. Lightweight yet structured, it maintains flexibility in both linear and lateral directions—allowing your feet to move naturally, activate properly and grow stronger over time. Extended heel and metatarsal zones—borrowed from Olympic weightlifting shoes—offer increased surface area for a more stable base. Combined with a true zero-drop platform, this outsole keeps your body in optimal alignment for balance and efficient force transfer under heavy load.',
+      description: 'The Apex Power outsole is engineered for precision. Its ultra-thin design brings you closer to the ground for unmatched stability and control. Lightweight yet structured, it maintains flexibility in both linear and lateral directionsâ€”allowing your feet to move naturally, activate properly and grow stronger over time. Extended heel and metatarsal zonesâ€”borrowed from Olympic weightlifting shoesâ€”offer increased surface area for a more stable base. Combined with a true zero-drop platform, this outsole keeps your body in optimal alignment for balance and efficient force transfer under heavy load.',
     },
     {
       title: 'Anatomical Toe Box',
-      description: 'The Apex Power toe box is designed to reflect the natural shape of the foot, giving your toes room to splay for enhanced balance and grounded stability under load. While the forefoot stays free, the heel and midfoot are locked in for a secure, precise fit—ensuring proper alignment and total control through every rep.',
+      description: 'The Apex Power toe box is designed to reflect the natural shape of the foot, giving your toes room to splay for enhanced balance and grounded stability under load. While the forefoot stays free, the heel and midfoot are locked in for a secure, precise fitâ€”ensuring proper alignment and total control through every rep.',
     },
   ];
 
@@ -70,7 +70,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   formatMoney(value: number, currencyCode: string): string {
-    return new Intl.NumberFormat('it-IT', {
+    return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: currencyCode || 'EUR',
     }).format(value);
@@ -83,7 +83,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       .pipe(
         timeout({ first: HomeComponent.requestTimeoutMs }),
         catchError((error) => {
-          this.productError = summarizeHttpError(error, 'Caricamento prodotti fallito.').message;
+          this.productError = summarizeHttpError(error, 'Product loading failed.').message;
           this.cdr.markForCheck();
           return of([] as ProductSummaryResponse[]);
         }),

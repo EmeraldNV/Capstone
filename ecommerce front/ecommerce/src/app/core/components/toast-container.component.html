@@ -3,7 +3,7 @@
     <article class="toast" [class]="'toast ' + toast.variant" role="status">
       <div class="toast-header">
         <strong>{{ toast.title }}</strong>
-        <button type="button" class="toast-close" aria-label="Chiudi notifica" (click)="dismiss(toast.id)">
+        <button type="button" class="toast-close" aria-label="Close notification" (click)="dismiss(toast.id)">
           ×
         </button>
       </div>

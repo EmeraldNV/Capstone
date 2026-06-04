@@ -16,14 +16,14 @@ export class AdminShellComponent {
 
   readonly navigation = [
     { label: 'Dashboard', path: '/admin/dashboard' },
-    { label: 'Utenti', path: '/admin/users' },
-    { label: 'Prodotti', path: '/admin/products' },
+    { label: 'Users', path: '/admin/users' },
+    { label: 'Products', path: '/admin/products' },
   ];
 
   readonly storefrontLinks = [
-    { label: 'Home sito', path: '/' },
+    { label: 'Site home', path: '/' },
     { label: 'Shop', path: '/shop' },
-    { label: 'Carrello', path: '/cart' },
-    { label: 'Profilo', path: '/account/profile' },
+    { label: 'Cart', path: '/cart' },
+    { label: 'Profile', path: '/account/profile' },
   ];
 }

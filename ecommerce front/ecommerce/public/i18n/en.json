@@ -1,0 +1,26 @@
+{
+  "meta": {
+    "locale": "en",
+    "direction": "ltr"
+  },
+  "common": {
+    "home": "Home",
+    "shop": "Shop",
+    "cart": "Cart",
+    "profile": "Profile",
+    "admin": "Admin",
+    "login": "Sign in",
+    "register": "Create account"
+  },
+  "admin": {
+    "dashboard": "Dashboard",
+    "users": "Users",
+    "products": "Products"
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "yes": "Yes",
+    "no": "No"
+  }
+}

@@ -110,7 +110,7 @@ export class AdminProductsPageComponent implements OnInit {
         }
 
         this.saving = false;
-        this.message = wasEditing ? 'Prodotto aggiornato.' : 'Prodotto creato.';
+        this.message = wasEditing ? 'Product updated.' : 'Product created.';
         this.selectedFiles = [];
         this.loadProducts();
         if (wasEditing) {
@@ -121,7 +121,7 @@ export class AdminProductsPageComponent implements OnInit {
       },
       error: (error) => {
         this.saving = false;
-        const summary = summarizeHttpError(error, 'Salvataggio prodotto fallito.');
+        const summary = summarizeHttpError(error, 'Product save failed.');
         this.errorMessage = summary.message;
         this.errorDetails = summary.details;
       },
@@ -162,7 +162,7 @@ export class AdminProductsPageComponent implements OnInit {
       },
       error: (error) => {
         this.loading = false;
-        const summary = summarizeHttpError(error, 'Caricamento prodotto fallito.');
+        const summary = summarizeHttpError(error, 'Product loading failed.');
         this.errorMessage = summary.message;
         this.errorDetails = summary.details;
       },
@@ -170,14 +170,14 @@ export class AdminProductsPageComponent implements OnInit {
   }
 
   deleteProduct(productId: number): void {
-    if (!window.confirm('Eliminare questo prodotto?')) {
+    if (!window.confirm('Delete this product?')) {
       return;
     }
     this.saving = true;
     this.api.deleteProduct(productId).subscribe({
       next: () => {
         this.saving = false;
-        this.message = 'Prodotto eliminato.';
+        this.message = 'Product deleted.';
         if (this.editingProduct?.id === productId) {
           this.clearEditor();
         }
@@ -185,7 +185,7 @@ export class AdminProductsPageComponent implements OnInit {
       },
       error: (error) => {
         this.saving = false;
-        const summary = summarizeHttpError(error, 'Eliminazione prodotto fallita.');
+        const summary = summarizeHttpError(error, 'Product deletion failed.');
         this.errorMessage = summary.message;
         this.errorDetails = summary.details;
       },
@@ -214,7 +214,7 @@ export class AdminProductsPageComponent implements OnInit {
       },
       error: (error) => {
         this.uploading = false;
-        const summary = summarizeHttpError(error, 'Rimozione immagine fallita.');
+        const summary = summarizeHttpError(error, 'Image removal failed.');
         this.errorMessage = summary.message;
         this.errorDetails = summary.details;
       },
@@ -234,7 +234,7 @@ export class AdminProductsPageComponent implements OnInit {
       },
       error: (error) => {
         this.uploading = false;
-        const summary = summarizeHttpError(error, 'Impostazione immagine principale fallita.');
+        const summary = summarizeHttpError(error, 'Setting the primary image failed.');
         this.errorMessage = summary.message;
         this.errorDetails = summary.details;
       },
@@ -250,12 +250,12 @@ export class AdminProductsPageComponent implements OnInit {
       next: (product) => {
         this.uploading = false;
         this.editingProduct = product;
-        this.message = 'Ordine immagini aggiornato.';
+        this.message = 'Image order updated.';
         this.loadProducts();
       },
       error: (error) => {
         this.uploading = false;
-        const summary = summarizeHttpError(error, 'Riordino immagini fallito.');
+        const summary = summarizeHttpError(error, 'Image reordering failed.');
         this.errorMessage = summary.message;
         this.errorDetails = summary.details;
       },
@@ -270,7 +270,7 @@ export class AdminProductsPageComponent implements OnInit {
     if (value === null || value === undefined) {
       return '-';
     }
-    return new Intl.NumberFormat('it-IT', {
+    return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: currencyCode || 'EUR',
     }).format(value);
@@ -332,7 +332,7 @@ export class AdminProductsPageComponent implements OnInit {
         },
         error: (error) => {
           this.loading = false;
-          const summary = summarizeHttpError(error, 'Caricamento lista prodotti fallito.');
+          const summary = summarizeHttpError(error, 'Product list loading failed.');
           this.errorMessage = summary.message;
           this.errorDetails = summary.details;
         },
@@ -347,7 +347,7 @@ export class AdminProductsPageComponent implements OnInit {
       },
       error: (error) => {
         this.loading = false;
-        const summary = summarizeHttpError(error, 'Caricamento prodotti filtrati fallito.');
+        const summary = summarizeHttpError(error, 'Filtered products loading failed.');
         this.errorMessage = summary.message;
         this.errorDetails = summary.details;
       },
@@ -384,14 +384,14 @@ export class AdminProductsPageComponent implements OnInit {
         this.categoriesLoading = false;
         this.form.get('categoryId')?.updateValueAndValidity({ onlySelf: true, emitEvent: false });
         if (!categories.length) {
-          this.categoriesError = 'Nessuna categoria disponibile nel menu.';
+          this.categoriesError = 'No categories available in the menu.';
         }
       },
       error: () => {
         this.categoriesLoading = false;
         this.categoryTree = [];
         this.allowedCategoryIds.clear();
-        this.categoriesError = 'Caricamento categorie fallito. Verifica il backend o ricarica la pagina.';
+        this.categoriesError = 'Category loading failed. Check the backend or reload the page.';
         this.form.get('categoryId')?.updateValueAndValidity({ onlySelf: true, emitEvent: false });
       },
     });
@@ -414,7 +414,7 @@ export class AdminProductsPageComponent implements OnInit {
         this.taglieLoading = false;
         this.availableTaglie = [];
         this.allowedTagliaIds.clear();
-        this.taglieError = 'Caricamento taglie fallito. Verifica il backend o ricarica la pagina.';
+        this.taglieError = 'Size loading failed. Check the backend or reload the page.';
         this.form.get('tagliaIds')?.updateValueAndValidity({ onlySelf: true, emitEvent: false });
       },
     });
@@ -432,7 +432,7 @@ export class AdminProductsPageComponent implements OnInit {
         this.uploading = false;
         this.saving = false;
         this.editingProduct = product;
-        this.message = 'Prodotto salvato e immagini caricate.';
+        this.message = 'Product saved and images uploaded.';
         this.resetStagedFiles();
         this.loadProducts();
         if (preserveEditing) {
@@ -444,7 +444,7 @@ export class AdminProductsPageComponent implements OnInit {
       error: (error) => {
         this.uploading = false;
         this.saving = false;
-        const summary = summarizeHttpError(error, 'Upload immagini fallito.');
+        const summary = summarizeHttpError(error, 'Image upload failed.');
         this.errorMessage = summary.message;
         this.errorDetails = summary.details;
       },

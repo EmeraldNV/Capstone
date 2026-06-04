@@ -20,7 +20,7 @@ interface CategorySection {
 
 interface ShopSection {
   root: CategoryNavigationResponse;
-  categories: CategorySection[];
+  categoriess: CategorySection[];
 }
 
 interface CategoryFilterItem {
@@ -62,7 +62,7 @@ export class ShopPageComponent implements OnInit {
   protected errorMessage = '';
   protected allProducts: ProductSummaryResponse[] = [];
   protected products: ProductSummaryResponse[] = [];
-  protected categories: CategoryNavigationResponse[] = [];
+  protected categoriess: CategoryNavigationResponse[] = [];
   protected sections: ShopSection[] = [];
   protected fallbackProducts: ProductSummaryResponse[] = [];
   protected categoryGroups: CategoryFilterGroup[] = [];
@@ -126,7 +126,7 @@ export class ShopPageComponent implements OnInit {
     if (value === null || value === undefined) {
       return '-';
     }
-    return new Intl.NumberFormat('it-IT', {
+    return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: currencyCode || 'EUR',
     }).format(value);
@@ -139,7 +139,7 @@ export class ShopPageComponent implements OnInit {
   buyNow(product: ProductSummaryResponse): void {
     const email = this.session.user()?.email ?? '';
     if (!email) {
-      this.quickBuyError = 'Devi accedere con un account prima di acquistare.';
+      this.quickBuyError = 'You must sign in with an account before purchasing.';
       this.cdr.markForCheck();
       return;
     }
@@ -161,7 +161,7 @@ export class ShopPageComponent implements OnInit {
       },
       error: (error) => {
         this.quickBuyLoadingId = null;
-        this.quickBuyError = summarizeHttpError(error, 'Creazione acquisto rapido fallita.').message;
+        this.quickBuyError = summarizeHttpError(error, 'Quick purchase creation failed.').message;
         this.cdr.markForCheck();
       },
     });
@@ -215,9 +215,9 @@ export class ShopPageComponent implements OnInit {
 
   selectedCategoryLabel(): string {
     if (!this.selectedCategorySlug) {
-      return 'Tutti i prodotti';
+      return 'All products';
     }
-    for (const root of this.categories) {
+    for (const root of this.categoriess) {
       const child = root.children.find((item) => item.slug === this.selectedCategorySlug);
       if (child) {
         return `${root.name} / ${child.name}`;
@@ -228,23 +228,23 @@ export class ShopPageComponent implements OnInit {
 
   private loadCategories(): void {
     this.loadingCategories = true;
-    this.armWatchdog('categories');
+    this.armWatchdog('categoriess');
     this.categoryApi
       .listNavigationTree()
       .pipe(
         timeout({ first: ShopPageComponent.requestTimeoutMs }),
         catchError((error) => {
-          this.errorMessage = summarizeHttpError(error, 'Caricamento categorie fallito.').message;
+          this.errorMessage = summarizeHttpError(error, 'Category loading failed.').message;
           this.categoryGroups = [];
           this.selectableCategorySlugs.clear();
           return of([] as CategoryNavigationResponse[]);
         }),
-        finalize(() => this.disarmWatchdog('categories')),
+        finalize(() => this.disarmWatchdog('categoriess')),
       )
       .subscribe({
-        next: (categories) => {
-          this.categories = categories;
-          this.categoryGroups = this.buildCategoryGroups(categories);
+        next: (categoriess) => {
+          this.categoriess = categoriess;
+          this.categoryGroups = this.buildCategoryGroups(categoriess);
           this.selectableCategorySlugs.clear();
           for (const group of this.categoryGroups) {
             for (const child of group.children) {
@@ -286,7 +286,7 @@ export class ShopPageComponent implements OnInit {
   private rebuildSections(): void {
     const productMap = new Map<string, ProductSummaryResponse[]>();
     const categorySlugs = new Set<string>();
-    this.collectCategorySlugs(this.categories, categorySlugs);
+    this.collectCategorySlugs(this.categoriess, categorySlugs);
     const fallbackProducts: ProductSummaryResponse[] = [];
 
     for (const product of this.products) {
@@ -299,11 +299,11 @@ export class ShopPageComponent implements OnInit {
       productMap.set(product.categorySlug, bucket);
     }
 
-    this.sections = this.categories
+    this.sections = this.categoriess
       .filter((root) => this.shouldShowRoot(root))
       .map((root) => ({
         root,
-        categories: this.visibleChildren(root).map((child) => ({
+        categoriess: this.visibleChildren(root).map((child) => ({
           category: child,
           products: productMap.get(child.slug) ?? [],
         })),
@@ -332,8 +332,8 @@ export class ShopPageComponent implements OnInit {
     return child ? [child] : [];
   }
 
-  private collectCategorySlugs(categories: CategoryNavigationResponse[], target: Set<string>): void {
-    for (const category of categories) {
+  private collectCategorySlugs(categoriess: CategoryNavigationResponse[], target: Set<string>): void {
+    for (const category of categoriess) {
       target.add(category.slug);
       if (category.children.length) {
         this.collectCategorySlugs(category.children, target);
@@ -341,8 +341,8 @@ export class ShopPageComponent implements OnInit {
     }
   }
 
-  private buildCategoryGroups(categories: CategoryNavigationResponse[]): CategoryFilterGroup[] {
-    return categories.map((root) => ({
+  private buildCategoryGroups(categoriess: CategoryNavigationResponse[]): CategoryFilterGroup[] {
+    return categoriess.map((root) => ({
       rootLabel: root.name,
       children: root.children.map((child) => ({
         label: child.name,
@@ -361,39 +361,39 @@ export class ShopPageComponent implements OnInit {
     return this.selectableCategorySlugs.has(categorySlug) ? categorySlug : '';
   }
 
-  private armWatchdog(kind: 'categories' | 'products'): void {
+  private armWatchdog(kind: 'categoriess' | 'products'): void {
     this.disarmWatchdog(kind);
-    const label = kind === 'categories' ? 'categorie' : 'prodotti';
+    const label = kind === 'categoriess' ? 'categories' : 'products';
     const id = window.setTimeout(() => {
-      if (kind === 'categories' && this.loadingCategories) {
-        this.categories = [];
+      if (kind === 'categoriess' && this.loadingCategories) {
+        this.categoriess = [];
         this.categoryGroups = [];
         this.selectableCategorySlugs.clear();
         this.loadingCategories = false;
-        this.errorMessage = `Caricamento ${label} non concluso. Verifica che il backend risponda.`;
+        this.errorMessage = `Loading ${label} did not complete. Verify that the backend is responding.`;
         this.rebuildSections();
       }
       if (kind === 'products' && this.loadingProducts) {
         this.products = [];
         this.loadingProducts = false;
-        this.errorMessage = `Caricamento ${label} non concluso. Verifica che il backend risponda.`;
+        this.errorMessage = `Loading ${label} did not complete. Verify that the backend is responding.`;
         this.rebuildSections();
       }
     }, ShopPageComponent.requestTimeoutMs + 1000);
 
-    if (kind === 'categories') {
+    if (kind === 'categoriess') {
       this.categoryWatchdogId = id;
     } else {
       this.productWatchdogId = id;
     }
   }
 
-  private disarmWatchdog(kind: 'categories' | 'products'): void {
-    const id = kind === 'categories' ? this.categoryWatchdogId : this.productWatchdogId;
+  private disarmWatchdog(kind: 'categoriess' | 'products'): void {
+    const id = kind === 'categoriess' ? this.categoryWatchdogId : this.productWatchdogId;
     if (id !== null) {
       window.clearTimeout(id);
     }
-    if (kind === 'categories') {
+    if (kind === 'categoriess') {
       this.categoryWatchdogId = null;
     } else {
       this.productWatchdogId = null;

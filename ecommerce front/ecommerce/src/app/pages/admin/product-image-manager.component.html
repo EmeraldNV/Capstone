@@ -1,15 +1,15 @@
 <section class="image-manager surface">
   <div class="manager-header">
     <div>
-      <h3>Immagini prodotto</h3>
+      <h3>Product images</h3>
       <p class="muted">
-        Stagia i file con FilePond, riordina quelli gia salvati e applica il nuovo ordine al prodotto.
+        Stage files with FilePond, reorder saved images and apply the new order to the product.
       </p>
     </div>
     <div class="manager-actions">
       @if (orderedImages.length) {
         <label class="primary-select">
-          <span>Anteprima</span>
+          <span>Preview</span>
           <select
             [disabled]="disabled"
             [value]="selectedPrimaryImageId ?? ''"
@@ -23,7 +23,7 @@
       }
 
       @if (stagedFileNames.length) {
-        <span class="counter">{{ stagedFileNames.length }} file pronti</span>
+        <span class="counter">{{ stagedFileNames.length }} files ready</span>
       }
     </div>
   </div>
@@ -41,11 +41,11 @@
   @if (orderedImages.length) {
     <div class="reorder-toolbar">
       <div>
-        <strong>Ordine immagini salvate</strong>
-        <p class="muted">Trascina le card per cambiare la sequenza visualizzata nello shop.</p>
+        <strong>Saved image order</strong>
+        <p class="muted">Drag the cards to change the sequence shown in the shop.</p>
       </div>
       <button class="button secondary" type="button" [disabled]="disabled || !orderDirty" (click)="saveOrder()">
-        Salva ordine
+        Save order
       </button>
     </div>
 
@@ -69,16 +69,16 @@
           </div>
           <div class="sortable-actions">
             <button class="button secondary" type="button" [disabled]="disabled" (click)="handlePrimary(image.id)">
-              Imposta primaria
+              Set primary
             </button>
             <button class="button ghost" type="button" [disabled]="disabled" (click)="handleRemove(image.id)">
-              Rimuovi
+              Remove
             </button>
           </div>
         </article>
       }
     </div>
   } @else {
-    <p class="muted">Nessuna immagine salvata per questo prodotto.</p>
+    <p class="muted">No images saved for this product.</p>
   }
 </section>

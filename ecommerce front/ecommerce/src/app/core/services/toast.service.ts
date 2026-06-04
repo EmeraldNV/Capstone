@@ -33,19 +33,19 @@ export class ToastService {
     window.setTimeout(() => this.dismiss(id), durationMs);
   }
 
-  success(message: string, title = 'Successo'): void {
+  success(message: string, title = 'Success'): void {
     this.show(message, { title, variant: 'success' });
   }
 
-  error(message: string, title = 'Errore'): void {
+  error(message: string, title = 'Error'): void {
     this.show(message, { title, variant: 'error' });
   }
 
-  info(message: string, title = 'Informazione'): void {
+  info(message: string, title = 'Info'): void {
     this.show(message, { title, variant: 'info' });
   }
 
-  warning(message: string, title = 'Attenzione'): void {
+  warning(message: string, title = 'Warning'): void {
     this.show(message, { title, variant: 'warning' });
   }
 
@@ -60,13 +60,13 @@ export class ToastService {
   private defaultTitle(variant: ToastVariant): string {
     switch (variant) {
       case 'success':
-        return 'Successo';
+        return 'Success';
       case 'error':
-        return 'Errore';
+        return 'Error';
       case 'warning':
-        return 'Attenzione';
+        return 'Warning';
       default:
-        return 'Informazione';
+        return 'Info';
     }
   }
 }

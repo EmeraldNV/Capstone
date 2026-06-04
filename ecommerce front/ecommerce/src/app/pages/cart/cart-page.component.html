@@ -1,15 +1,15 @@
 <section class="container cart-layout">
   <div class="cart-head">
     <div>
-      <span class="badge">Carrello</span>
-      <h1>I tuoi prodotti</h1>
-      <p class="muted">Controlla articoli, quantita e totale prima di proseguire.</p>
+      <span class="badge">Cart</span>
+      <h1>Your products</h1>
+      <p class="muted">Review items, quantity and total before checkout.</p>
     </div>
 
     <div class="cart-actions">
-      <a class="button secondary" routerLink="/shop">Continua lo shopping</a>
+      <a class="button secondary" routerLink="/shop">Continue shopping</a>
       @if (cart.items.length) {
-        <button type="button" class="button ghost" (click)="cart.clear()">Svuota carrello</button>
+        <button type="button" class="button ghost" (click)="cart.clear()">Clear cart</button>
       }
     </div>
   </div>
@@ -18,10 +18,10 @@
     <div class="surface empty-cart">
       <span class="empty-icon">0</span>
       <div>
-        <h2>Il carrello e vuoto</h2>
-        <p class="muted">Aggiungi prodotti dallo shop per vederli qui.</p>
+        <h2>Your cart is empty</h2>
+        <p class="muted">Add products from the shop to see them here.</p>
       </div>
-      <a class="button" routerLink="/shop">Vai allo shop</a>
+      <a class="button" routerLink="/shop">Go to shop</a>
     </div>
   } @else {
     <div class="cart-grid">
@@ -35,80 +35,47 @@
                 <div class="cart-empty">{{ item.name.charAt(0) }}</div>
               }
             </div>
-
             <div class="cart-item-copy">
               <div class="cart-item-top">
                 <div class="cart-item-title">
-                  <span class="cart-kicker">Prodotto</span>
+                  <span class="cart-kicker">Product</span>
                   <h2>{{ item.name }}</h2>
-                  <p class="muted">{{ item.shortDescription || 'Nessuna descrizione breve disponibile.' }}</p>
+                  <p class="muted">{{ item.shortDescription || 'No short description available.' }}</p>
                 </div>
-
-                <button type="button" class="button ghost" (click)="cart.remove(item.productId)">Rimuovi</button>
+                <button type="button" class="button ghost" (click)="cart.remove(item.productId)">Remove</button>
               </div>
-
               <div class="cart-meta">
-                @if (item.brandName) {
-                  <span>{{ item.brandName }}</span>
-                }
-                @if (item.categoryName) {
-                  <span>{{ item.categoryName }}</span>
-                }
+                @if (item.brandName) { <span>{{ item.brandName }}</span> }
+                @if (item.categoryName) { <span>{{ item.categoryName }}</span> }
                 <span>{{ item.productCode }}</span>
               </div>
-
               <div class="cart-item-controls">
                 <button type="button" class="button secondary" (click)="cart.decrease(item.productId)">-</button>
                 <span class="quantity">{{ item.quantity }}</span>
                 <button type="button" class="button secondary" (click)="cart.increase(item.productId)">+</button>
-
                 <div class="cart-prices">
-                  <span class="unit-price">Prezzo unitario {{ formatMoney(item.price, item.currencyCode) }}</span>
+                  <span class="unit-price">Unit price {{ formatMoney(item.price, item.currencyCode) }}</span>
                   <strong class="line-total">{{ formatMoney(lineTotal(item), item.currencyCode) }}</strong>
                 </div>
               </div>
-
               <div class="cart-footer">
-                <span class="cart-pill" [class.ok]="!!item.categorySlug">{{ item.categorySlug || 'Senza categoria' }}</span>
-                <a class="text-link" [routerLink]="['/shop', item.slug]">Apri dettaglio</a>
+                <span class="cart-pill" [class.ok]="!!item.categorySlug">{{ item.categorySlug || 'Uncategorized' }}</span>
+                <a class="text-link" [routerLink]="['/shop', item.slug]">Open details</a>
               </div>
             </div>
           </article>
         }
       </div>
-
       <aside class="surface cart-summary">
-        <span class="cart-kicker">Riepilogo</span>
-        <h2>Totale ordine</h2>
-
-        <div class="summary-row">
-          <span>Articoli</span>
-          <strong>{{ cart.getCount() }}</strong>
-        </div>
-
-        <div class="summary-row">
-          <span>Prodotti distinti</span>
-          <strong>{{ cart.items.length }}</strong>
-        </div>
-
-        <div class="summary-row total">
-          <span>Totale</span>
-          <strong>{{ formatMoney(cart.getTotal(), currencyCode()) }}</strong>
-        </div>
-
-        <p class="muted summary-note">
-          Il totale viene calcolato sul prezzo effettivo salvato nel carrello.
-        </p>
-
-        @if (checkoutError) {
-          <div class="form-banner error">{{ checkoutError }}</div>
-        }
-
-        <button type="button" class="button" [disabled]="checkoutLoading || !cart.items.length" (click)="checkout()">
-          {{ checkoutLoading ? 'Reindirizzamento...' : 'Paga con Stripe' }}
-        </button>
-
-        <a class="button" routerLink="/shop">Aggiungi altri prodotti</a>
+        <span class="cart-kicker">Summary</span>
+        <h2>Order total</h2>
+        <div class="summary-row"><span>Items</span><strong>{{ cart.getCount() }}</strong></div>
+        <div class="summary-row"><span>Distinct products</span><strong>{{ cart.items.length }}</strong></div>
+        <div class="summary-row total"><span>Total</span><strong>{{ formatMoney(cart.getTotal(), currencyCode()) }}</strong></div>
+        <p class="muted summary-note">The total is calculated using the effective price stored in the cart.</p>
+        @if (checkoutError) { <div class="form-banner error">{{ checkoutError }}</div> }
+        <button type="button" class="button" [disabled]="checkoutLoading || !cart.items.length" (click)="checkout()">{{ checkoutLoading ? 'Redirecting...' : 'Pay with Stripe' }}</button>
+        <a class="button" routerLink="/shop">Add more products</a>
       </aside>
     </div>
   }

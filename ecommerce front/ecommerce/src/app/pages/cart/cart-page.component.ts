@@ -25,7 +25,7 @@ export class CartPageComponent {
   protected checkoutError = '';
 
   formatMoney(value: number, currencyCode: string): string {
-    return new Intl.NumberFormat('it-IT', {
+    return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: currencyCode || 'EUR',
     }).format(value);
@@ -42,7 +42,7 @@ export class CartPageComponent {
   checkout(): void {
     const email = this.session.user()?.email ?? '';
     if (!email) {
-      this.checkoutError = 'Devi accedere con un account prima di procedere al pagamento.';
+      this.checkoutError = 'You must sign in with an account before checkout.';
       this.cdr.markForCheck();
       return;
     }
@@ -64,7 +64,7 @@ export class CartPageComponent {
       },
       error: (error) => {
         this.checkoutLoading = false;
-        const summary = summarizeHttpError(error, 'Creazione pagamento Stripe fallita.');
+        const summary = summarizeHttpError(error, 'Stripe checkout creation failed.');
         this.checkoutError = summary.message;
         this.cdr.markForCheck();
       },

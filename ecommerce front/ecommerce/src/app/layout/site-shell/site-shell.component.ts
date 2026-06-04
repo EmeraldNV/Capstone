@@ -65,22 +65,20 @@ export class SiteShellComponent implements OnInit {
   private loadCategories(forceRefresh = false): void {
     this.categoriesLoading = true;
     this.categoriesError = '';
-    const request$ = forceRefresh
-      ? this.categoryApi.refreshNavigationTree()
-      : this.categoryApi.listNavigationTree();
+    const request$ = forceRefresh ? this.categoryApi.refreshNavigationTree() : this.categoryApi.listNavigationTree();
 
     request$.subscribe({
       next: (categories) => {
         this.categories = categories;
         this.categoriesLoading = false;
         if (!categories.length) {
-          this.categoriesError = 'Nessuna categoria disponibile nel menu.';
+          this.categoriesError = 'No categories available in the menu.';
         }
       },
       error: () => {
         this.categoriesLoading = false;
         this.categories = [];
-        this.categoriesError = 'Menu categorie non disponibile. Riprova o aggiorna la pagina.';
+        this.categoriesError = 'Category menu is unavailable. Try again or refresh the page.';
       },
     });
   }

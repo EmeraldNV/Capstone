@@ -67,7 +67,7 @@ export class AdminUsersPageComponent implements OnInit {
     }).subscribe({
       next: () => {
         this.saving = false;
-        this.successMessage = 'Utente creato correttamente.';
+        this.successMessage = 'User created successfully.';
         this.createForm.reset({
           email: '',
           password: '',
@@ -78,13 +78,13 @@ export class AdminUsersPageComponent implements OnInit {
         this.loadUsers();
         this.loadAuditLogs();
       },
-      error: (error) => this.handleError(error, 'Creazione utente fallita.'),
+      error: (error) => this.handleError(error, 'User creation failed.'),
     });
   }
 
   submitUpdate(): void {
     if (!this.selectedUser) {
-      this.errorMessage = 'Seleziona un utente da modificare.';
+      this.errorMessage = 'Select a user to edit.';
       return;
     }
 
@@ -106,12 +106,12 @@ export class AdminUsersPageComponent implements OnInit {
       next: (user) => {
         this.saving = false;
         this.selectedUser = user;
-        this.successMessage = 'Utente aggiornato correttamente.';
+        this.successMessage = 'User updated successfully.';
         this.patchEditForm(user);
         this.loadUsers();
         this.loadAuditLogs();
       },
-      error: (error) => this.handleError(error, 'Aggiornamento utente fallito.'),
+      error: (error) => this.handleError(error, 'User update failed.'),
     });
   }
 
@@ -121,7 +121,7 @@ export class AdminUsersPageComponent implements OnInit {
   }
 
   deactivateUser(user: AdminUserResponse): void {
-    if (!window.confirm(`Disattivare ${user.email}?`)) {
+    if (!window.confirm(`Deactivate ${user.email}?`)) {
       return;
     }
 
@@ -134,11 +134,11 @@ export class AdminUsersPageComponent implements OnInit {
           this.selectedUser = updated;
           this.patchEditForm(updated);
         }
-        this.successMessage = 'Utente disattivato.';
+        this.successMessage = 'User deactivated.';
         this.loadUsers();
         this.loadAuditLogs();
       },
-      error: (error) => this.handleError(error, 'Disattivazione utente fallita.'),
+      error: (error) => this.handleError(error, 'User deactivation failed.'),
     });
   }
 
@@ -155,7 +155,7 @@ export class AdminUsersPageComponent implements OnInit {
     if (!value) {
       return '-';
     }
-    return new Intl.DateTimeFormat('it-IT', {
+    return new Intl.DateTimeFormat('en-US', {
       day: '2-digit',
       month: 'short',
       year: 'numeric',
@@ -180,7 +180,7 @@ export class AdminUsersPageComponent implements OnInit {
           }
         }
       },
-      error: (error) => this.handleError(error, 'Caricamento utenti fallito.'),
+      error: (error) => this.handleError(error, 'User loading failed.'),
     });
   }
 
@@ -189,7 +189,7 @@ export class AdminUsersPageComponent implements OnInit {
       next: (logs) => {
         this.auditLogs = logs;
       },
-      error: (error) => this.handleError(error, 'Caricamento cronologia fallito.'),
+      error: (error) => this.handleError(error, 'Audit log loading failed.'),
     });
   }
 

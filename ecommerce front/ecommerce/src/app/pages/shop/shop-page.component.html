@@ -2,39 +2,22 @@
   <div class="shop-hero">
     <div>
       <span class="badge">Shop</span>
-      <h1>Prodotti disponibili</h1>
-      <p class="muted">I prodotti sono mostrati direttamente come card.</p>
+      <h1>Available products</h1>
+      <p class="muted">Products are shown directly as cards.</p>
     </div>
     @if (isStaff) {
-      <a class="button secondary shop-create-button" routerLink="/admin/products">
-        + Nuovo prodotto
-      </a>
+      <a class="button secondary shop-create-button" routerLink="/admin/products">+ New product</a>
     }
   </div>
 
   <div class="shop-category-nav surface">
-    <button
-      type="button"
-      class="category-chip reset"
-      [class.active]="!selectedCategorySlug"
-      (click)="clearCategory()"
-    >
-      Tutti i prodotti
-    </button>
-
+    <button type="button" class="category-chip reset" [class.active]="!selectedCategorySlug" (click)="clearCategory()">All products</button>
     @for (group of categoryGroups; track group.rootLabel) {
       <div class="category-group">
         <div class="category-group-root">{{ group.rootLabel }}</div>
         <div class="category-group-children">
           @for (child of group.children; track child.slug) {
-            <button
-              type="button"
-              class="category-chip child"
-              [class.active]="isFilterActive(child.slug)"
-              (click)="selectCategory(child.slug)"
-            >
-              {{ child.label }}
-            </button>
+            <button type="button" class="category-chip child" [class.active]="isFilterActive(child.slug)" (click)="selectCategory(child.slug)">{{ child.label }}</button>
           }
         </div>
       </div>
@@ -44,67 +27,37 @@
   <div class="shop-filters surface">
     <div class="filter-copy">
       <strong>{{ selectedCategoryLabel() }}</strong>
-      <p class="muted">Visualizzazione diretta dei prodotti disponibili.</p>
+      <p class="muted">Direct view of the available products.</p>
     </div>
-
     <div class="filter-actions">
-      @if (selectedCategorySlug) {
-        <button type="button" class="button ghost" (click)="clearCategory()">Reset categoria</button>
-      }
+      @if (selectedCategorySlug) { <button type="button" class="button ghost" (click)="clearCategory()">Reset category</button> }
     </div>
   </div>
 
-  @if (errorMessage) {
-    <div class="form-banner error">{{ errorMessage }}</div>
-  }
-
-  @if (loadingProducts && !products.length) {
-    <div class="loading-state surface loading-inline">
-      <div class="loading-bar"></div>
-      <p class="muted">
-        Caricamento prodotti in corso...
-      </p>
-    </div>
-  }
-
-  @if (loadingProducts && products.length) {
-    <div class="loading-state surface loading-inline">
-      <div class="loading-bar"></div>
-      <p class="muted">Aggiornamento prodotti in corso...</p>
-    </div>
-  }
+  @if (errorMessage) { <div class="form-banner error">{{ errorMessage }}</div> }
+  @if (loadingProducts && !products.length) { <div class="loading-state surface loading-inline"><div class="loading-bar"></div><p class="muted">Loading products...</p></div> }
+  @if (loadingProducts && products.length) { <div class="loading-state surface loading-inline"><div class="loading-bar"></div><p class="muted">Refreshing products...</p></div> }
 
   @if (products.length) {
     <div class="product-card-grid">
       @for (product of products; track product.id) {
         <article class="shop-card">
           <figure class="shop-card-media">
-            @if (cardImage(product); as media) {
-              <img [src]="resolveMediaUrl(media.imageUrl)" [alt]="media.altText" />
-            } @else {
-              <div class="shop-card-empty">{{ product.name.charAt(0) }}</div>
-            }
+            @if (cardImage(product); as media) { <img [src]="resolveMediaUrl(media.imageUrl)" [alt]="media.altText" /> } @else { <div class="shop-card-empty">{{ product.name.charAt(0) }}</div> }
           </figure>
-
           <div class="shop-card-copy">
-            <span class="shop-card-kicker">{{ product.categoryName || 'Senza categoria' }}</span>
+            <span class="shop-card-kicker">{{ product.categoryName || 'Uncategorized' }}</span>
             <div class="product-name-row">
               <h3>{{ product.name }}</h3>
-              @if (isStaff) {
-                <span class="manage-badge">Gestibile</span>
-              }
+              @if (isStaff) { <span class="manage-badge">Manageable</span> }
             </div>
-            <p class="shop-card-description">{{ product.shortDescription || 'Nessuna descrizione breve disponibile.' }}</p>
+            <p class="shop-card-description">{{ product.shortDescription || 'No short description available.' }}</p>
             <div class="shop-card-footer">
               <strong>{{ formatMoney(product.effectivePrice, product.currencyCode) }}</strong>
               <div class="shop-card-actions">
-                <button type="button" class="shop-card-cta secondary-cta" (click)="addToCart(product)">
-                  Aggiungi
-                </button>
-                <button type="button" class="shop-card-cta secondary-cta" [disabled]="quickBuyLoadingId === product.id" (click)="buyNow(product)">
-                  {{ quickBuyLoadingId === product.id ? 'Acquisto...' : 'Acquista subito' }}
-                </button>
-                <a class="shop-card-cta" [routerLink]="['/shop', product.slug]">Dettagli</a>
+                <button type="button" class="shop-card-cta secondary-cta" (click)="addToCart(product)">Add</button>
+                <button type="button" class="shop-card-cta secondary-cta" [disabled]="quickBuyLoadingId === product.id" (click)="buyNow(product)">{{ quickBuyLoadingId === product.id ? 'Redirecting...' : 'Buy now' }}</button>
+                <a class="shop-card-cta" [routerLink]="['/shop', product.slug]">Details</a>
               </div>
             </div>
           </div>
@@ -112,10 +65,8 @@
       }
     </div>
   } @else if (!loadingProducts) {
-    <p class="muted">Nessun prodotto disponibile.</p>
+    <p class="muted">No products available.</p>
   }
 
-  @if (quickBuyError) {
-    <div class="form-banner error">{{ quickBuyError }}</div>
-  }
+  @if (quickBuyError) { <div class="form-banner error">{{ quickBuyError }}</div> }
 </section>

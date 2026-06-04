@@ -2,43 +2,27 @@
   <div class="result-head">
     <div>
       <span class="badge">Stripe checkout</span>
-      <h1>{{ result === 'success' ? 'Pagamento completato' : 'Pagamento annullato' }}</h1>
-      <p class="muted">
-        {{ result === 'success' ? "La transazione viene verificata e l'ordine viene registrato nel DB." : 'Nessun addebito è stato effettuato.' }}
-      </p>
+      <h1>{{ result === 'success' ? 'Payment completed' : 'Payment canceled' }}</h1>
+      <p class="muted">{{ result === 'success' ? 'The transaction is being verified and the order is being stored in the database.' : 'No charge has been made.' }}</p>
     </div>
     <div class="result-actions">
-      <a class="button secondary" routerLink="/shop">Torna allo shop</a>
-      <a class="button ghost" routerLink="/cart">Apri carrello</a>
+      <a class="button secondary" routerLink="/shop">Back to shop</a>
+      <a class="button ghost" routerLink="/cart">Open cart</a>
     </div>
   </div>
-
   @if (loading) {
-    <div class="surface result-panel">
-      <div class="loading-bar"></div>
-      <p class="muted">Verifica stato pagamento in corso...</p>
-    </div>
+    <div class="surface result-panel"><div class="loading-bar"></div><p class="muted">Checking payment status...</p></div>
   } @else if (errorMessage) {
     <div class="form-banner error">{{ errorMessage }}</div>
   } @else {
     <div class="surface result-panel">
       <h2>{{ message }}</h2>
-      <p class="muted">
-        @if (realtimeConnected) {
-          Aggiornamento realtime attivo.
-        } @else {
-          Attendo conferma backend.
-        }
-      </p>
-      @if (orderNumber) {
-        <p class="muted">Numero ordine: <strong>{{ orderNumber }}</strong></p>
-      }
-      @if (sessionStatus) {
-        <p class="muted">Stato sessione: {{ sessionStatus }}</p>
-      }
+      <p class="muted">@if (realtimeConnected) { Realtime updates are active. } @else { Waiting for backend confirmation. }</p>
+      @if (orderNumber) { <p class="muted">Order number: <strong>{{ orderNumber }}</strong></p> }
+      @if (sessionStatus) { <p class="muted">Session status: {{ sessionStatus }}</p> }
       <div class="result-actions">
-        <a class="button" routerLink="/shop">Continua lo shopping</a>
-        <a class="button secondary" routerLink="/cart">Vai al carrello</a>
+        <a class="button" routerLink="/shop">Continue shopping</a>
+        <a class="button secondary" routerLink="/cart">Go to cart</a>
       </div>
     </div>
   }

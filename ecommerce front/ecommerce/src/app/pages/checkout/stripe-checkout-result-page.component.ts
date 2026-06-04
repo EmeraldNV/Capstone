@@ -53,7 +53,7 @@ export class StripeCheckoutResultPageComponent implements OnInit, OnDestroy {
         this.pollSessionStatus(sessionId, 0);
       } else {
         this.loading = false;
-        this.message = 'Pagamento annullato. Puoi tornare allo shop o riprovare dal carrello.';
+        this.message = 'Payment canceled. You can go back to the shop or try again from the cart.';
         this.cdr.markForCheck();
       }
     });
@@ -66,7 +66,7 @@ export class StripeCheckoutResultPageComponent implements OnInit, OnDestroy {
   private pollSessionStatus(sessionId: string, attempt: number): void {
     if (!sessionId) {
       this.loading = false;
-      this.message = 'Sessione Stripe non trovata nel redirect.';
+      this.message = 'Stripe session was not found in the redirect.';
       this.cdr.markForCheck();
       return;
     }
@@ -101,7 +101,7 @@ export class StripeCheckoutResultPageComponent implements OnInit, OnDestroy {
           return;
         }
         this.loading = false;
-        const summary = summarizeHttpError(error, 'Stato pagamento non disponibile.');
+        const summary = summarizeHttpError(error, 'Payment status unavailable.');
         this.errorMessage = summary.message;
         this.cdr.markForCheck();
       },

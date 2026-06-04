@@ -122,7 +122,7 @@ export class ProfilePageComponent implements OnInit {
       .subscribe({
         next: (profile) => {
           this.saving = false;
-          this.successMessage = `Profilo aggiornato per ${profile.email}.`;
+          this.successMessage = `Profile updated for ${profile.email}.`;
         },
         error: (error) => {
           const summary = summarizeHttpError(error, 'Profile update failed.');

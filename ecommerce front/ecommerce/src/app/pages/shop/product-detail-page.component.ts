@@ -42,7 +42,7 @@ export class ProductDetailPageComponent implements OnInit {
       if (!slug) {
         this.loading = false;
         this.product = null;
-        this.errorMessage = 'Slug prodotto mancante.';
+        this.errorMessage = 'Missing product slug.';
         this.cdr.markForCheck();
         return;
       }
@@ -62,7 +62,7 @@ export class ProductDetailPageComponent implements OnInit {
         },
         error: (error) => {
           this.loading = false;
-          this.errorMessage = summarizeHttpError(error, 'Caricamento dettaglio prodotto fallito.').message;
+          this.errorMessage = summarizeHttpError(error, 'Product detail loading failed.').message;
           this.cdr.markForCheck();
         },
       });
@@ -235,7 +235,7 @@ export class ProductDetailPageComponent implements OnInit {
     if (Number.isNaN(date.getTime())) {
       return value;
     }
-    return new Intl.DateTimeFormat('it-IT', {
+    return new Intl.DateTimeFormat('en-US', {
       dateStyle: 'medium',
       timeStyle: 'short',
     }).format(date);
@@ -270,7 +270,7 @@ export class ProductDetailPageComponent implements OnInit {
 
     const email = this.session.user()?.email ?? '';
     if (!email) {
-      this.quickBuyError = 'Devi accedere con un account prima di acquistare.';
+      this.quickBuyError = 'You must sign in with an account before purchasing.';
       this.cdr.markForCheck();
       return;
     }
@@ -290,7 +290,7 @@ export class ProductDetailPageComponent implements OnInit {
       },
       error: (error) => {
         this.quickBuyLoading = false;
-        const summary = summarizeHttpError(error, 'Creazione acquisto rapido fallita.');
+        const summary = summarizeHttpError(error, 'Quick purchase creation failed.');
         this.quickBuyError = summary.message;
         this.cdr.markForCheck();
       },
@@ -301,7 +301,7 @@ export class ProductDetailPageComponent implements OnInit {
     if (value === null || value === undefined) {
       return '-';
     }
-    return new Intl.NumberFormat('it-IT', {
+    return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: currencyCode || 'EUR',
     }).format(value);

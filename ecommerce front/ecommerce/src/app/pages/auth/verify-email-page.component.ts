@@ -25,7 +25,7 @@ export class VerifyEmailPageComponent implements OnInit {
     const token = this.route.snapshot.queryParamMap.get('token');
     if (!token) {
       this.loading = false;
-      this.errorMessage = 'Token di verifica mancante.';
+      this.errorMessage = 'Missing verification token.';
       return;
     }
 

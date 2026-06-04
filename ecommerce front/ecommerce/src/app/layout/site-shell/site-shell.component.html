@@ -8,53 +8,36 @@
       <nav class="nav" aria-label="Primary">
         @for (item of primaryNav; track item.label) {
           @if (item.route === '/shop') {
-            <div
-              class="nav-dropdown nav-shop-dropdown"
-              (mouseenter)="openShopMenu()"
-              (mouseleave)="closeShopMenu()"
-            >
-              <button class="nav-link nav-button" type="button" (click)="openShop($event)">
-                {{ item.label }}
-              </button>
+            <div class="nav-dropdown nav-shop-dropdown" (mouseenter)="openShopMenu()" (mouseleave)="closeShopMenu()">
+              <button class="nav-link nav-button" type="button" (click)="openShop($event)">{{ item.label }}</button>
               @if (shopMenuOpen) {
                 <div class="dropdown-panel">
                   @if (categoriesLoading) {
                     <div class="dropdown-empty">
-                      <span class="muted">Caricamento categorie...</span>
+                      <span class="muted">Loading categories...</span>
                     </div>
                   } @else if (categories.length) {
                     @for (category of categories; track category.id) {
                       <div class="dropdown-group">
-                        <span class="dropdown-root">
-                          {{ category.name }}
-                        </span>
+                        <span class="dropdown-root">{{ category.name }}</span>
                         <div class="dropdown-children">
                           @for (child of category.children; track child.id) {
-                            <a
-                              class="dropdown-child"
-                              [routerLink]="['/shop']"
-                              [queryParams]="{ category: child.slug }"
-                              queryParamsHandling="merge"
-                            >
-                              {{ child.name }}
-                            </a>
+                            <a class="dropdown-child" [routerLink]="['/shop']" [queryParams]="{ category: child.slug }" queryParamsHandling="merge">{{ child.name }}</a>
                           }
                         </div>
                       </div>
                     }
                   } @else {
                     <div class="dropdown-empty">
-                      <span class="muted">{{ categoriesError || 'Nessuna categoria disponibile.' }}</span>
-                      <button type="button" class="button secondary" (click)="refreshCategories()">Ricarica</button>
+                      <span class="muted">{{ categoriesError || 'No categories available.' }}</span>
+                      <button type="button" class="button secondary" (click)="refreshCategories()">Reload</button>
                     </div>
                   }
                 </div>
               }
             </div>
           } @else {
-            <a class="nav-link" [routerLink]="item.route">
-              {{ item.label }}
-            </a>
+            <a class="nav-link" [routerLink]="item.route">{{ item.label }}</a>
           }
         }
       </nav>
@@ -62,19 +45,19 @@
       <div class="account-actions">
         @if (session.isAuthenticated()) {
           <a class="button secondary" routerLink="/cart">
-            Carrello
+            Cart
             @if (cart.count$ | async; as count) {
               <span class="cart-badge">{{ count }}</span>
             }
           </a>
-          <a class="button secondary" routerLink="/account/profile">Profilo</a>
+          <a class="button secondary" routerLink="/account/profile">Profile</a>
           @if (session.isAdmin()) {
             <a class="button secondary" routerLink="/admin/dashboard">Admin</a>
           }
-          <button class="button ghost" type="button" (click)="logout()">Esci</button>
+          <button class="button ghost" type="button" (click)="logout()">Sign out</button>
         } @else {
-          <a class="button secondary" routerLink="/auth/register">Registrati</a>
-          <a class="button" routerLink="/auth/login">Accedi</a>
+          <a class="button secondary" routerLink="/auth/register">Create account</a>
+          <a class="button" routerLink="/auth/login">Sign in</a>
         }
       </div>
     </div>

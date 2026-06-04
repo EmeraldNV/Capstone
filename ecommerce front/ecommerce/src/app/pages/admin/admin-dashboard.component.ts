@@ -68,14 +68,14 @@ export class AdminDashboardComponent implements OnInit {
     if (value == null) {
       return '-';
     }
-    return new Intl.NumberFormat('it-IT', { style: 'currency', currency: currencyCode }).format(value);
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: currencyCode }).format(value);
   }
 
   protected formatDate(value: string | null | undefined): string {
     if (!value) {
       return '-';
     }
-    return new Intl.DateTimeFormat('it-IT', { day: '2-digit', month: 'short', year: 'numeric' }).format(
+    return new Intl.DateTimeFormat('en-US', { day: '2-digit', month: 'short', year: 'numeric' }).format(
       new Date(value),
     );
   }
@@ -128,7 +128,7 @@ export class AdminDashboardComponent implements OnInit {
   protected activeCategoryLabel(): string {
     const selected = this.form.get('categoryId')?.value || '';
     if (!selected) {
-      return 'Tutte';
+      return 'All';
     }
     const match = this.filterOptions?.categories.find((item) => item.value === selected);
     return match?.label ?? selected;
@@ -149,7 +149,7 @@ export class AdminDashboardComponent implements OnInit {
       error: (error) => {
         this.applyDefaultDateRange();
         this.loadDashboard();
-        const summary = summarizeHttpError(error, 'Caricamento filtri dashboard fallito.');
+        const summary = summarizeHttpError(error, 'Dashboard filter loading failed.');
         this.errorMessage = summary.message;
         this.errorDetails = summary.details;
       },
@@ -194,7 +194,7 @@ export class AdminDashboardComponent implements OnInit {
         },
         error: (error) => {
           this.resultsCount = 0;
-          const summary = summarizeHttpError(error, 'Caricamento statistiche fallito.');
+          const summary = summarizeHttpError(error, 'Dashboard statistics loading failed.');
           this.errorMessage = summary.message;
           this.errorDetails = summary.details;
         },

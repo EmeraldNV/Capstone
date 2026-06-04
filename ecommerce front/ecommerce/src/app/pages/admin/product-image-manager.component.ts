@@ -167,7 +167,7 @@ export class ProductImageManagerComponent implements AfterViewInit, OnChanges, O
       disabled: this.disabled,
       imagePreviewHeight: 120,
       itemInsertLocation: 'after',
-      labelIdle: 'Trascina qui le immagini oppure fai clic per selezionarle',
+      labelIdle: 'Drag images here or click to browse',
       acceptedFileTypes: ['image/*'],
       fileValidateTypeDetectType: (source, type) => this.detectFileType(source, type),
       onupdatefiles: (items: FilePondFile[]) => {

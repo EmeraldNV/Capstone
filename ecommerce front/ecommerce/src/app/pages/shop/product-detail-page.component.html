@@ -1,132 +1,72 @@
 <section class="container detail-layout">
   @if (loading) {
-    <div class="loading-state surface loading-inline">
-      <div class="loading-bar"></div>
-      <p class="muted">Caricamento dettaglio prodotto in corso...</p>
-    </div>
+    <div class="loading-state surface loading-inline"><div class="loading-bar"></div><p class="muted">Loading product details...</p></div>
   } @else if (errorMessage) {
     <div class="form-banner error">{{ errorMessage }}</div>
   } @else if (product) {
     <div class="detail-head">
       <div>
-        <span class="badge">Dettaglio prodotto</span>
+        <span class="badge">Product detail</span>
         <h1>{{ product.name }}</h1>
-        <p class="muted">{{ product.shortDescription || 'Dettaglio completo del prodotto.' }}</p>
+        <p class="muted">{{ product.shortDescription || 'Full product details.' }}</p>
       </div>
-
       <div class="detail-head-actions">
-        <a class="button secondary" routerLink="/shop">Torna allo shop</a>
-        <a class="button ghost" routerLink="/cart">Vai al carrello</a>
+        <a class="button secondary" routerLink="/shop">Back to shop</a>
+        <a class="button ghost" routerLink="/cart">Go to cart</a>
       </div>
     </div>
-
     <div class="detail-grid">
       <div class="gallery">
         <div class="carousel-shell" (touchstart)="onCarouselTouchStart($event)" (touchend)="onCarouselTouchEnd($event)">
           <div class="carousel-viewport">
             <div class="carousel-track" [style.transform]="carouselTrackTransform()">
               @for (image of carouselImages(); track image.id; let index = $index) {
-                <button
-                  type="button"
-                  class="carousel-slide"
-                  (click)="openImage(image.imageUrl)"
-                >
-                  <img [src]="resolveMediaUrl(image.imageUrl)" [alt]="image.altText || product.name" />
-                </button>
+                <button type="button" class="carousel-slide" (click)="openImage(image.imageUrl)"><img [src]="resolveMediaUrl(image.imageUrl)" [alt]="image.altText || product.name" /></button>
               } @empty {
-                <button type="button" class="carousel-slide" (click)="openImage(selectedImageUrl || '')">
-                  <div class="empty-image">{{ product.name.charAt(0) }}</div>
-                </button>
+                <button type="button" class="carousel-slide" (click)="openImage(selectedImageUrl || '')"><div class="empty-image">{{ product.name.charAt(0) }}</div></button>
               }
             </div>
           </div>
-
           @if (carouselImages().length) {
-            <button
-              type="button"
-              class="carousel-nav prev"
-              aria-label="Immagine precedente"
-              [disabled]="!hasMultipleImages()"
-              (click)="previousCarouselImage()"
-            >
-              &lsaquo;
-            </button>
-            <button
-              type="button"
-              class="carousel-nav next"
-              aria-label="Immagine successiva"
-              [disabled]="!hasMultipleImages()"
-              (click)="nextCarouselImage()"
-            >
-              &rsaquo;
-            </button>
-
+            <button type="button" class="carousel-nav prev" aria-label="Previous image" [disabled]="!hasMultipleImages()" (click)="previousCarouselImage()">&lsaquo;</button>
+            <button type="button" class="carousel-nav next" aria-label="Next image" [disabled]="!hasMultipleImages()" (click)="nextCarouselImage()">&rsaquo;</button>
             @if (hasMultipleImages()) {
-              <div class="carousel-dots" aria-label="Navigazione immagini">
+              <div class="carousel-dots" aria-label="Image navigation">
                 @for (image of carouselImages(); track image.id; let index = $index) {
-                  <button
-                    type="button"
-                    class="carousel-dot"
-                    [class.active]="currentCarouselIndex() === index"
-                    [attr.aria-label]="'Mostra immagine ' + (index + 1)"
-                    (click)="goToCarouselImage(index)"
-                  ></button>
+                  <button type="button" class="carousel-dot" [class.active]="currentCarouselIndex() === index" [attr.aria-label]="'Show image ' + (index + 1)" (click)="goToCarouselImage(index)"></button>
                 }
               </div>
             }
           }
         </div>
-
-        <div class="carousel-footer">
-          <span class="carousel-count">{{ carouselCountLabel() }}</span>
-        </div>
-
+        <div class="carousel-footer"><span class="carousel-count">{{ carouselCountLabel() }}</span></div>
         @if (product.images.length > 1) {
           <div class="thumbnail-row">
             @for (image of product.images; track image.id) {
-              <button type="button" class="thumbnail" (click)="goToCarouselImage($index); selectImage(image.imageUrl)">
-                <img [src]="resolveMediaUrl(image.imageUrl)" [alt]="image.altText || product.name" />
-              </button>
+              <button type="button" class="thumbnail" (click)="goToCarouselImage($index); selectImage(image.imageUrl)"><img [src]="resolveMediaUrl(image.imageUrl)" [alt]="image.altText || product.name" /></button>
             }
           </div>
         }
       </div>
-
       <aside class="surface product-info">
         <div class="detail-status">
-          <span class="status-pill" [class.ok]="product.active">Attivo</span>
+          <span class="status-pill" [class.ok]="product.active">Active</span>
           <span class="status-pill" [class.ok]="product.ipfApproved">IPF Approved</span>
-          <span class="status-pill" [class.warn]="!product.taxable">Non tassabile</span>
+          <span class="status-pill" [class.warn]="!product.taxable">Not taxable</span>
         </div>
-
         <div class="price-row">
           <strong>{{ formatMoney(product.effectivePrice, product.currencyCode) }}</strong>
-          <span [class.out-of-stock]="product.stockQuantity <= 0">
-            {{ product.stockQuantity > 0 ? product.stockQuantity + ' disponibili' : 'Esaurito' }}
-          </span>
+          <span [class.out-of-stock]="product.stockQuantity <= 0">{{ product.stockQuantity > 0 ? product.stockQuantity + ' available' : 'Out of stock' }}</span>
         </div>
-
         <div class="detail-actions">
-          <button type="button" class="button" [disabled]="product.stockQuantity <= 0" (click)="addToCart()">
-            Aggiungi al carrello
-          </button>
-          <button type="button" class="button secondary" [disabled]="product.stockQuantity <= 0 || quickBuyLoading" (click)="buyNow()">
-            {{ quickBuyLoading ? 'Acquisto...' : 'Acquista subito' }}
-          </button>
-          <a class="button secondary" routerLink="/cart">Vai al carrello</a>
+          <button type="button" class="button" [disabled]="product.stockQuantity <= 0" (click)="addToCart()">Add to cart</button>
+          <button type="button" class="button secondary" [disabled]="product.stockQuantity <= 0 || quickBuyLoading" (click)="buyNow()">{{ quickBuyLoading ? 'Redirecting...' : 'Buy now' }}</button>
+          <a class="button secondary" routerLink="/cart">Go to cart</a>
         </div>
-
-        @if (quickBuyError) {
-          <div class="form-banner error">{{ quickBuyError }}</div>
-        }
-
+        @if (quickBuyError) { <div class="form-banner error">{{ quickBuyError }}</div> }
+        <div class="spec-section"><h2>Description</h2><p>{{ product.description || 'No full description available.' }}</p></div>
         <div class="spec-section">
-          <h2>Descrizione</h2>
-          <p>{{ product.description || 'Nessuna descrizione completa disponibile.' }}</p>
-        </div>
-
-        <div class="spec-section">
-          <h2>Specifiche prodotto</h2>
+          <h2>Product specifications</h2>
           <dl class="spec-list">
             <div><dt>Product code</dt><dd>{{ product.productCode }}</dd></div>
             <div><dt>Slug</dt><dd>{{ product.slug }}</dd></div>
@@ -136,9 +76,9 @@
             <div><dt>Season</dt><dd>{{ product.season || '-' }}</dd></div>
             <div><dt>Material</dt><dd>{{ product.material || '-' }}</dd></div>
             <div><dt>Care instructions</dt><dd>{{ product.careInstructions || '-' }}</dd></div>
-            <div><dt>Taxable</dt><dd>{{ product.taxable ? 'Si' : 'No' }}</dd></div>
-            <div><dt>IPF approved</dt><dd>{{ product.ipfApproved ? 'Si' : 'No' }}</dd></div>
-            <div><dt>Active</dt><dd>{{ product.active ? 'Si' : 'No' }}</dd></div>
+            <div><dt>Taxable</dt><dd>{{ product.taxable ? 'Yes' : 'No' }}</dd></div>
+            <div><dt>IPF approved</dt><dd>{{ product.ipfApproved ? 'Yes' : 'No' }}</dd></div>
+            <div><dt>Active</dt><dd>{{ product.active ? 'Yes' : 'No' }}</dd></div>
             <div><dt>Brand</dt><dd>{{ product.brandName || '-' }}</dd></div>
             <div><dt>Brand ID</dt><dd>{{ product.brandId ?? '-' }}</dd></div>
             <div><dt>Category</dt><dd>{{ product.categoryName || '-' }}</dd></div>
@@ -152,33 +92,20 @@
             <div><dt>Updated at</dt><dd>{{ formatDateTime(product.updatedAt) }}</dd></div>
           </dl>
         </div>
-
         @if (product.images.length) {
           <div class="spec-section">
-            <h2>Immagini</h2>
+            <h2>Images</h2>
             <div class="detail-images">
               @for (image of product.images; track image.id) {
-                <figure class="detail-thumb">
-                  <img [src]="resolveMediaUrl(image.imageUrl)" [alt]="image.altText || product.name" />
-                  <figcaption>
-                    <span>#{{ $index + 1 }}</span>
-                    <span>{{ image.primary ? 'Primaria' : 'Secondaria' }}</span>
-                  </figcaption>
-                </figure>
+                <figure class="detail-thumb"><img [src]="resolveMediaUrl(image.imageUrl)" [alt]="image.altText || product.name" /><figcaption><span>#{{ $index + 1 }}</span><span>{{ image.primary ? 'Primary' : 'Secondary' }}</span></figcaption></figure>
               }
             </div>
           </div>
         }
       </aside>
     </div>
-
     @if (zoomedImageUrl) {
-      <div class="zoom-overlay" role="dialog" aria-modal="true" (click)="closeZoom()">
-        <div class="zoom-panel" (click)="$event.stopPropagation()">
-          <button type="button" class="zoom-close" (click)="closeZoom()">Chiudi</button>
-          <img [src]="resolveMediaUrl(zoomedImageUrl)" [alt]="product.name" />
-        </div>
-      </div>
+      <div class="zoom-overlay" role="dialog" aria-modal="true" (click)="closeZoom()"><div class="zoom-panel" (click)="$event.stopPropagation()"><button type="button" class="zoom-close" (click)="closeZoom()">Close</button><img [src]="resolveMediaUrl(zoomedImageUrl)" [alt]="product.name" /></div></div>
     }
   }
 </section>

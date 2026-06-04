@@ -1,119 +1,119 @@
 <section class="container auth-layout">
   <div class="auth-copy">
     <span class="badge">Account</span>
-    <h1>Profilo utente</h1>
+    <h1>User profile</h1>
     <p class="muted">
-      Modifica dati personali e indirizzo principale. La schermata salva tutto via API backend.
+      Update personal details and the primary address. This screen saves everything through the backend API.
     </p>
 
     <div class="stack profile-summary">
       <div class="summary-row"><span>Email</span><strong>{{ session.user()?.email }}</strong></div>
-      <div class="summary-row"><span>Ruoli</span><strong>{{ session.roles().join(', ') }}</strong></div>
+      <div class="summary-row"><span>Roles</span><strong>{{ session.roles().join(', ') }}</strong></div>
     </div>
   </div>
 
   <form class="surface auth-form" [formGroup]="form" (ngSubmit)="submit()">
     <div class="stack" [class.is-loading]="loading">
       @if (loading) {
-        <div class="form-banner">Caricamento profilo...</div>
+        <div class="form-banner">Loading profile...</div>
       }
 
       <div class="grid-2">
         <div class="field">
-          <label for="firstName">Nome</label>
+          <label for="firstName">First name</label>
           <input id="firstName" type="text" formControlName="firstName" autocomplete="given-name" />
         </div>
         <div class="field">
-          <label for="lastName">Cognome</label>
+          <label for="lastName">Last name</label>
           <input id="lastName" type="text" formControlName="lastName" autocomplete="family-name" />
         </div>
       </div>
 
       <div class="grid-2">
         <div class="field">
-          <label for="companyName">Azienda</label>
+          <label for="companyName">Company</label>
           <input id="companyName" type="text" formControlName="companyName" autocomplete="organization" />
         </div>
         <div class="field">
-          <label for="phone">Telefono</label>
+          <label for="phone">Phone</label>
           <input id="phone" type="tel" formControlName="phone" autocomplete="tel" />
         </div>
       </div>
 
       <div class="grid-2">
         <div class="field">
-          <label for="taxCode">Codice fiscale</label>
+          <label for="taxCode">Tax code</label>
           <input id="taxCode" type="text" formControlName="taxCode" />
         </div>
         <div class="field">
-          <label for="vatNumber">Partita IVA</label>
+          <label for="vatNumber">VAT number</label>
           <input id="vatNumber" type="text" formControlName="vatNumber" />
         </div>
       </div>
 
       <div class="field">
-        <label for="birthDate">Data di nascita</label>
+        <label for="birthDate">Date of birth</label>
         <input id="birthDate" type="date" formControlName="birthDate" />
       </div>
 
       <label class="checkbox-row">
         <input type="checkbox" formControlName="marketingConsent" />
-        <span>Consento al trattamento per finalità di marketing</span>
+        <span>I consent to data processing for marketing purposes</span>
       </label>
 
-      <div class="section-divider">Indirizzo principale</div>
+      <div class="section-divider">Primary address</div>
 
       <div formGroupName="address" class="stack">
         <div class="grid-2">
           <div class="field">
-            <label for="label">Etichetta</label>
+            <label for="label">Label</label>
             <input id="label" type="text" formControlName="label" />
           </div>
           <div class="field">
-            <label for="recipientName">Destinatario</label>
+            <label for="recipientName">Recipient</label>
             <input id="recipientName" type="text" formControlName="recipientName" />
           </div>
         </div>
 
         <div class="grid-2">
           <div class="field">
-            <label for="addressCompanyName">Azienda</label>
+            <label for="addressCompanyName">Company</label>
             <input id="addressCompanyName" type="text" formControlName="companyName" />
           </div>
           <div class="field">
-            <label for="addressPhone">Telefono</label>
+            <label for="addressPhone">Phone</label>
             <input id="addressPhone" type="tel" formControlName="phone" />
           </div>
         </div>
 
         <div class="field">
-          <label for="line1">Indirizzo</label>
+          <label for="line1">Address</label>
           <input id="line1" type="text" formControlName="line1" />
         </div>
 
         <div class="field">
-          <label for="line2">Indirizzo 2</label>
+          <label for="line2">Address line 2</label>
           <input id="line2" type="text" formControlName="line2" />
         </div>
 
         <div class="grid-2">
           <div class="field">
-            <label for="city">Città</label>
+            <label for="city">City</label>
             <input id="city" type="text" formControlName="city" />
           </div>
           <div class="field">
-            <label for="stateRegion">Provincia/Regione</label>
+            <label for="stateRegion">State / Region</label>
             <input id="stateRegion" type="text" formControlName="stateRegion" />
           </div>
         </div>
 
         <div class="grid-2">
           <div class="field">
-            <label for="postalCode">CAP</label>
+            <label for="postalCode">Postal code</label>
             <input id="postalCode" type="text" formControlName="postalCode" />
           </div>
           <div class="field">
-            <label for="countryCode">Paese</label>
+            <label for="countryCode">Country</label>
             <input id="countryCode" type="text" formControlName="countryCode" maxlength="2" />
           </div>
         </div>
@@ -134,9 +134,9 @@
 
       <div class="form-actions">
         <button class="button" type="submit" [disabled]="saving">
-          {{ saving ? 'Salvataggio in corso...' : 'Salva profilo' }}
+          {{ saving ? 'Saving profile...' : 'Save profile' }}
         </button>
-        <a class="button secondary" routerLink="/">Torna alla home</a>
+        <a class="button secondary" routerLink="/">Back to home</a>
       </div>
     </div>
   </form>
